@@ -3,15 +3,17 @@ buildscript {
 		springBootVersion = '1.4.2.RELEASE'
 	}
 	repositories {
+		jcenter()
 		mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'org.springframework:springloaded:1.2.0.RELEASE' // Hot reloading for Spring
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
@@ -27,11 +29,23 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	// Spring boot
 	compile('org.springframework.boot:spring-boot-starter-web')
-	runtime('mysql:mysql-connector-java')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+	// Database
+	compile('com.h2database:h2')
+	compile('org.flywaydb:flyway-core')
+
+	// Tests
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+idea {
+	module {
+		inheritOutputDirs = false
+		outputDir = file("$buildDir/classes/main/")
+	}
 }
 
 task wrapper(type: Wrapper) {

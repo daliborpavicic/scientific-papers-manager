@@ -7,21 +7,29 @@ import java.util.Date;
 @Table(name = "scientific_paper")
 public class ScientificPaper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
+
     String title;
+
     String anAbstract;
+
     String keywords;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     ScientificPaperCategory category;
+
+    @Temporal(TemporalType.DATE)
     Date publishDate;
+
     String filePath;
+
     String elasticiId;
 
     public ScientificPaper() {
     }
 
-    @Id
-    @Column(name = "paper_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -30,7 +38,6 @@ public class ScientificPaper {
         this.id = id;
     }
 
-    @Column(name = "paper_title")
     public String getTitle() {
         return title;
     }
@@ -39,7 +46,6 @@ public class ScientificPaper {
         this.title = title;
     }
 
-    @Column(name = "paper_abstract")
     public String getAnAbstract() {
         return anAbstract;
     }
@@ -48,7 +54,6 @@ public class ScientificPaper {
         this.anAbstract = anAbstract;
     }
 
-    @Column(name = "paper_keywords")
     public String getKeywords() {
         return keywords;
     }
@@ -57,8 +62,6 @@ public class ScientificPaper {
         this.keywords = keywords;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ref_category_id")
     public ScientificPaperCategory getCategory() {
         return category;
     }
@@ -67,8 +70,6 @@ public class ScientificPaper {
         this.category = category;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "paper_publish_date")
     public Date getPublishDate() {
         return publishDate;
     }
@@ -77,7 +78,6 @@ public class ScientificPaper {
         this.publishDate = publishDate;
     }
 
-    @Column(name = "paper_file_path")
     public String getFilePath() {
         return filePath;
     }
@@ -87,7 +87,6 @@ public class ScientificPaper {
     }
 
 
-    @Column(name = "paper_elastic_id")
     public String getElasticiId() {
         return elasticiId;
     }

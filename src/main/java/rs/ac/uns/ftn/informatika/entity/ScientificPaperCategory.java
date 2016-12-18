@@ -14,7 +14,6 @@ public class ScientificPaperCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "category_id")
     public Integer getId() {
         return id;
     }
@@ -23,7 +22,6 @@ public class ScientificPaperCategory {
         this.id = id;
     }
 
-    @Column(name = "category_name")
     public String getName() {
         return name;
     }

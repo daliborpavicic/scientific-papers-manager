@@ -8,7 +8,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath 'org.springframework:springloaded:1.2.0.RELEASE' // Hot reloading for Spring
+		classpath 'org.springframework:springloaded:1.2.3.RELEASE' // Hot reloading for Spring
 	}
 }
 
@@ -20,6 +20,7 @@ jar {
 	baseName = 'scientific-papers-manager'
 	version = '0.0.1-SNAPSHOT'
 }
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -32,10 +33,10 @@ dependencies {
 	// Spring boot
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile("org.springframework.boot:spring-boot-configuration-processor")
 
 	// Database
 	compile('com.h2database:h2')
-	compile('org.flywaydb:flyway-core')
 
 	// Tests
 	testCompile('org.springframework.boot:spring-boot-starter-test')

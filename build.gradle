@@ -38,6 +38,10 @@ dependencies {
 	// Database
 	compile('com.h2database:h2')
 
+	// PDF utilities
+	compile("org.apache.pdfbox:pdfbox:2.0.0")
+	compile("org.apache.pdfbox:xmpbox:2.0.0")
+
 	// Tests
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -18,7 +18,7 @@ public class ScientificPaper {
     String keywords;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    ScientificPaperCategory category;
+    Category category;
 
     @Temporal(TemporalType.DATE)
     Date publishDate;
@@ -62,11 +62,11 @@ public class ScientificPaper {
         this.keywords = keywords;
     }
 
-    public ScientificPaperCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(ScientificPaperCategory category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

@@ -3,13 +3,13 @@ package rs.ac.uns.ftn.informatika.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "scientific_paper_category")
-public class ScientificPaperCategory {
+@Table(name = "category")
+public class Category {
 
     Integer id;
     String name;
 
-    public ScientificPaperCategory() {
+    public Category() {
     }
 
     @Id

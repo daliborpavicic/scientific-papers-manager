@@ -26,3 +26,5 @@ nbdist/
 
 # Generated files
 data/
+uploads/
+out/

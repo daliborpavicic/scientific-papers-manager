@@ -25,7 +25,7 @@ public class ScientificPaper {
 
     String filePath;
 
-    String elasticiId;
+    String elasticId;
 
     public ScientificPaper() {
     }
@@ -86,12 +86,11 @@ public class ScientificPaper {
         this.filePath = filePath;
     }
 
-
-    public String getElasticiId() {
-        return elasticiId;
+    public String getElasticId() {
+        return elasticId;
     }
 
-    public void setElasticiId(String elasticiId) {
-        this.elasticiId = elasticiId;
+    public void setElasticId(String elasticId) {
+        this.elasticId = elasticId;
     }
 }

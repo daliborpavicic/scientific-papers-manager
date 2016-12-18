@@ -6,19 +6,20 @@ import javax.persistence.*;
 @Table(name = "category")
 public class Category {
 
-    Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+
     String name;
 
     public Category() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

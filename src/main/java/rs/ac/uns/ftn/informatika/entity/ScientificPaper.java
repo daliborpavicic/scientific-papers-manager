@@ -9,7 +9,7 @@ public class ScientificPaper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
+    Long id;
 
     String title;
 
@@ -23,18 +23,18 @@ public class ScientificPaper {
     @Temporal(TemporalType.DATE)
     Date publishDate;
 
-    String filePath;
+    String fileName;
 
-    String elasticId;
+    String elasticSearchId;
 
     public ScientificPaper() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -78,19 +78,19 @@ public class ScientificPaper {
         this.publishDate = publishDate;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public String getElasticId() {
-        return elasticId;
+    public String getElasticSearchId() {
+        return elasticSearchId;
     }
 
-    public void setElasticId(String elasticId) {
-        this.elasticId = elasticId;
+    public void setElasticSearchId(String elasticSearchId) {
+        this.elasticSearchId = elasticSearchId;
     }
 }

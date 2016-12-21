@@ -13,7 +13,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 jar {
@@ -44,13 +44,6 @@ dependencies {
 
 	// Tests
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-}
-
-idea {
-	module {
-		inheritOutputDirs = false
-		outputDir = file("$buildDir/classes/main/")
-	}
 }
 
 task wrapper(type: Wrapper) {

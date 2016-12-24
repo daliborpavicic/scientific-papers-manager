@@ -36,9 +36,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-configuration-processor')
 	compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
 	
-	// Java native access, used by Elasticsearch
-	compile ('net.java.dev.jna:platform:3.5.0')
-	
 	// Database
 	compile('com.h2database:h2')
 

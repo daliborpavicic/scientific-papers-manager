@@ -1,7 +1,8 @@
 package rs.ac.uns.ftn.informatika.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+
 import rs.ac.uns.ftn.informatika.entity.ScientificPaper;
 
-public interface ScientificPaperRepository extends JpaRepository<ScientificPaper, Integer> {
+public interface ScientificPaperRepository extends ElasticsearchRepository<ScientificPaper, Integer> {
 }

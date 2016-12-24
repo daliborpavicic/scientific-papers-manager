@@ -81,7 +81,7 @@ public class ScientificPapersController {
         Resource resource = storageService.loadAsResource(newScientificPaper.fileName);
         newScientificPaper.text = documentParserService.extractTextFromDocument(resource.getInputStream());
 
-        // todo: add a new document to Elasticsearch index, retrieve the id from ES and save the document data to DB
+        // TODO: add a new document to Elasticsearch index, retrieve the id from ES and save the document data to DB
 
         scientificPaperService.save(newScientificPaper);
     }

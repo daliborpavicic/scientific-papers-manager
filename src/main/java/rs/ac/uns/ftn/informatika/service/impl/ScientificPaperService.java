@@ -16,6 +16,6 @@ public class ScientificPaperService {
     }
 
     public void save(NewScientificPaper newScientificPaper) {
-        // todo: add dto to an Elastic search index, map it to domain and save data to DB
+        // TODO: add dto to an Elastic search index, map it to domain and save data to DB
     }
 }

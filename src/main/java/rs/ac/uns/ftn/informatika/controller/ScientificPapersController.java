@@ -1,23 +1,32 @@
 package rs.ac.uns.ftn.informatika.controller;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.xmpbox.xml.XmpParsingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
 import rs.ac.uns.ftn.informatika.dto.NewScientificPaper;
 import rs.ac.uns.ftn.informatika.dto.ParsedScientificPaper;
+import rs.ac.uns.ftn.informatika.entity.ScientificPaper;
 import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
 import rs.ac.uns.ftn.informatika.service.DocumentParserService;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 import rs.ac.uns.ftn.informatika.service.impl.ScientificPaperService;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/paper")
@@ -37,7 +46,7 @@ public class ScientificPapersController {
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value="upload", method = RequestMethod.GET)
     public ResponseEntity<List<String>> listUploadedFiles() throws IOException {
 
         List<String> uploadedFiles = storageService
@@ -76,18 +85,38 @@ public class ScientificPapersController {
                 .body(parsedScientificPaper);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void publishScientificPaper(@RequestBody NewScientificPaper newScientificPaper) throws IOException {
+    @RequestMapping(value="publish", method = RequestMethod.POST)
+    public ResponseEntity<ScientificPaper> publishScientificPaper(@RequestBody NewScientificPaper newScientificPaper) throws IOException {
         Resource resource = storageService.loadAsResource(newScientificPaper.fileName);
         newScientificPaper.text = documentParserService.extractTextFromDocument(resource.getInputStream());
-
-        // TODO: add a new document to Elasticsearch index, retrieve the id from ES and save the document data to DB
-
-        scientificPaperService.save(newScientificPaper);
+        newScientificPaper.numberOfImages = documentParserService.extractImageNamesFromDocument(resource.getInputStream()).size();
+        
+        ScientificPaper indexedDocument = scientificPaperService.index(newScientificPaper);
+        
+        return ResponseEntity
+        		.ok()
+        		.body(indexedDocument);
     }
-
+    
+    @RequestMapping(value="", method = RequestMethod.GET)
+    public Iterable<ScientificPaper> findByTitle(@RequestBody String title) {
+    	
+    	Iterable<ScientificPaper> allScientificPapers = scientificPaperService.findAll();
+		
+    	return allScientificPapers;
+    }
+    
+    @RequestMapping(value="", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteAllScientificPapers() {
+    	scientificPaperService.deleteAll();
+    	
+    	return ResponseEntity
+    			.ok()
+    			.body("Successfully deleted all scientific papers from index!");
+    }
+    
     @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
+    public ResponseEntity<Void> handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
     }
 

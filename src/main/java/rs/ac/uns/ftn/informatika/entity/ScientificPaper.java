@@ -43,6 +43,8 @@ public class ScientificPaper {
 	public static Builder builder() {
 		return new Builder();
 	}
+	
+	public ScientificPaper() {}
 
 	public Long getId() {
 		return id;

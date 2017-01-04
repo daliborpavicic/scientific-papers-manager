@@ -51,7 +51,9 @@ public class PdfParserService implements DocumentParserService {
             } catch (XmpParsingException e) {
                 System.err.println("An error ouccred when parsing the meta data: "
                         + e.getMessage());
-            }
+            } finally {
+				document.close();
+			}
         } else {
             // The pdf doesn't contain any metadata, try to use the
             // document information instead
@@ -59,6 +61,8 @@ public class PdfParserService implements DocumentParserService {
             if (information != null) {
                 parsedScientificPaper.title = information.getTitle();
             }
+            
+            document.close();
         }
 
         return parsedScientificPaper;

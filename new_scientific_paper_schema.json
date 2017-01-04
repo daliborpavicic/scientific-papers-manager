@@ -1,0 +1,52 @@
+{
+  "title": "New scientific document schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "description": "The title of the document",
+      "type": "string"
+    },
+    "anAbstract": {
+      "description": "A short text that summarizes the document",
+      "type": "string"
+    },
+    "keywords": {
+      "description": "The keywords for the document",
+      "type": "string"
+    },
+    "categoryId": {
+      "description": "The id of the document's category",
+      "type": "number"
+    },
+    "text": {
+      "description": "The full text of the document",
+      "type": "string"
+    },
+    "imageNames": {
+      "description": "The names of the images in a document",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "publishDate": {
+      "description": "The date when document is published",
+      "type": "string"      
+    },
+    "authorId": {
+      "description": "The id of the document author",
+      "type": "number"
+    },
+    "fileName": {
+      "description": "The name of the uploaded document file",
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "anAbstract",
+    "keywords",
+    "categoryId",
+    "fileName"
+  ]
+}

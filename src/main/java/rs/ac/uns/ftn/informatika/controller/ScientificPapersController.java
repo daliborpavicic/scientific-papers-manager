@@ -99,8 +99,7 @@ public class ScientificPapersController {
     }
     
     @RequestMapping(value="", method = RequestMethod.GET)
-    public Iterable<ScientificPaper> findByTitle(@RequestBody String title) {
-    	
+    public Iterable<ScientificPaper> listAllPapers() {
     	Iterable<ScientificPaper> allScientificPapers = scientificPaperService.findAll();
 		
     	return allScientificPapers;

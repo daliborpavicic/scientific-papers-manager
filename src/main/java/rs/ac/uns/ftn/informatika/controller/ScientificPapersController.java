@@ -22,8 +22,8 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import rs.ac.uns.ftn.informatika.dto.NewScientificPaper;
 import rs.ac.uns.ftn.informatika.dto.ParsedScientificPaper;
-import rs.ac.uns.ftn.informatika.entity.ScientificPaper;
 import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
+import rs.ac.uns.ftn.informatika.model.ScientificPaper;
 import rs.ac.uns.ftn.informatika.service.DocumentParserService;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 import rs.ac.uns.ftn.informatika.service.impl.ScientificPaperService;

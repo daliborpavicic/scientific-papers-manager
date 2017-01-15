@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.informatika.configuration.StorageProperties;
 @EnableConfigurationProperties(StorageProperties.class)
 @EnableAutoConfiguration(exclude = {ElasticsearchConfiguration.class})
 public class Application {
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}

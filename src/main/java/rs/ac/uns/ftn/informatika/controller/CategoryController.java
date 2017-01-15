@@ -2,7 +2,8 @@ package rs.ac.uns.ftn.informatika.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.informatika.entity.Category;
+
+import rs.ac.uns.ftn.informatika.model.Category;
 import rs.ac.uns.ftn.informatika.service.CategoryService;
 
 import java.util.List;

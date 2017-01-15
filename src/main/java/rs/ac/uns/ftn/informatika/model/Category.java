@@ -1,4 +1,4 @@
-package rs.ac.uns.ftn.informatika.entity;
+package rs.ac.uns.ftn.informatika.model;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package rs.ac.uns.ftn.informatika.controller;
+package rs.ac.uns.ftn.informatika.controller.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

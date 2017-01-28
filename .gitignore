@@ -30,3 +30,4 @@ nbdist/
 data/
 /uploads/
 /bin/
+*.log

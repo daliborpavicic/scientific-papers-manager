@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- Log message format -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <!-- Name of the file where the log messages are written -->
+    <file>scientific-papers-manager.log</file>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <!-- Setting the logging level to ERROR for elastic search to remove unnecessary stuff form log  -->
+  <logger name="org.elasticsearch.bootstrap" level="ERROR" />
+
+  <!-- Setting the root level of logging to INFO -->
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+<!--     Uncomment the line below to enable logging to file -->
+<!--     <appender-ref ref="FILE" /> -->
+  </root>
+</configuration>

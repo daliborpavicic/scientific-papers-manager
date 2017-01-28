@@ -8,7 +8,6 @@ public class AdvancedSearchData {
 	public FieldQueryParams keywordsParams;
 	public FieldQueryParams textParams;
 	public FieldQueryParams authorNameParams;
-	public String categoryName;
-	public String publishDateFrom;
-	public String publishDateTo;
+	public FieldQueryParams categoryParams;
+	public FieldQueryParams publishDateParams;
 }

@@ -1,13 +1,21 @@
 package rs.ac.uns.ftn.informatika.model;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Document(indexName = "papers", type = "scientific-paper", shards = 1, replicas = 0)
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@Document(indexName = ScientificPaper.INDEX_NAME, type = ScientificPaper.TYPE_NAME, shards = 1, replicas = 0)
 public class ScientificPaper {
+
+	public static final String INDEX_NAME = "papers";
+	public static final String TYPE_NAME = "scientific-paper";
 
 	@Id
 	Long id;
@@ -27,9 +35,9 @@ public class ScientificPaper {
 	@Field(type = FieldType.String, index = FieldIndex.analyzed, store = false)
 	String text;
 
-	@Field(type = FieldType.String, index = FieldIndex.not_analyzed, store = true)
-	String publishDate; // TODO: Change field type to date after date formatting
-						// is implemented
+	@Field(type = FieldType.Date, format = DateFormat.year_month_day, index = FieldIndex.not_analyzed, store = true)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd")
+	Date publishDate;
 
 	@Field(type = FieldType.String, index = FieldIndex.analyzed, store = true)
 	String authorName;
@@ -70,7 +78,7 @@ public class ScientificPaper {
 		return text;
 	}
 
-	public String getPublishDate() {
+	public Date getPublishDate() {
 		return publishDate;
 	}
 
@@ -106,7 +114,7 @@ public class ScientificPaper {
 		private String keywords;
 		private String categoryName;
 		private String text;
-		private String publishDate;
+		private Date publishDate;
 		private String authorName;
 		private Integer numberOfImages;
 		private String fileName;
@@ -141,7 +149,7 @@ public class ScientificPaper {
 			return this;
 		}
 
-		public Builder publishDate(String publishDate) {
+		public Builder publishDate(Date publishDate) {
 			this.publishDate = publishDate;
 			return this;
 		}

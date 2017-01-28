@@ -1,14 +1,28 @@
 package rs.ac.uns.ftn.informatika.model;
 
+import static rs.ac.uns.ftn.informatika.model.BoolQueryOccurrence.MUST;
+import static rs.ac.uns.ftn.informatika.model.QueryType.DEFAULT;
+
 public class FieldQueryParams {
 
 	private String queryString;
 
-	private QueryType queryType = QueryType.DEFAULT;
+	private QueryType queryType;
 
-	private BoolQueryOccurrence boolOccurrence = BoolQueryOccurrence.MUST;
+	private BoolQueryOccurrence boolOccurrence;
 
 	public FieldQueryParams() {
+		this("", DEFAULT, MUST);
+	}
+	
+	public FieldQueryParams(String queryString) {
+		this(queryString, DEFAULT, MUST);
+	}
+
+	public FieldQueryParams(String queryString, QueryType queryType, BoolQueryOccurrence boolOccurrence) {
+		this.queryString = queryString;
+		this.queryType = queryType;
+		this.boolOccurrence = boolOccurrence;
 	}
 
 	public String getQueryString() {
@@ -35,7 +49,7 @@ public class FieldQueryParams {
 		this.queryType = queryType;
 	}
 	
-	public boolean isNotEmpty() {
+	public boolean isValid() {
 		return !this.queryString.isEmpty();
 	}
 

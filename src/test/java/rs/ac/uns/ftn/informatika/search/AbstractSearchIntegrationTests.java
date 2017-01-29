@@ -19,7 +19,7 @@ import rs.ac.uns.ftn.informatika.service.TestDataGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestApplication.class})
-public class AbstractSearchIntegrationTests {
+public abstract class AbstractSearchIntegrationTests {
 
 	@Autowired
 	protected ElasticsearchTemplate elasticsearchTemplate;
@@ -34,22 +34,28 @@ public class AbstractSearchIntegrationTests {
 	public void before() {
 		elasticsearchTemplate.deleteIndex(ScientificPaper.class);
 		elasticsearchTemplate.createIndex(ScientificPaper.class);
-		elasticsearchTemplate.putMapping(ScientificPaper.class);
-		addTestDocumentsToIndex();
+		elasticsearchTemplate.refresh(ScientificPaper.class);
 	}
-
-	private void addTestDocumentsToIndex() {
-		List<IndexQuery> indexQueries = testDataGenerator.generateTestData().stream().map((testDocument) -> {
-			
+	
+	protected IndexQuery createIndexQuery(ScientificPaper scientificPaper) {
+		return new IndexQueryBuilder()
+				.withId(scientificPaper.getId())
+				.withObject(scientificPaper)
+				.build();
+	}
+	
+	protected List<IndexQuery> createIndexQueries(List<ScientificPaper> scientificPapers) {
+		return scientificPapers.stream().map((scientificPaper) -> {
 			return new IndexQueryBuilder()
-					.withObject(testDocument)
-					.withId(String.valueOf(testDocument.getId()))
-					.withIndexName(ScientificPaper.INDEX_NAME)
-					.withType(ScientificPaper.TYPE_NAME)
+					.withId(scientificPaper.getId())
+					.withObject(scientificPaper)
 					.build();
 		}).collect(Collectors.toList());
+	}
+	
+	protected List<IndexQuery> createSamplePapersWithText(String text, int numberOfPapers) {
+		List<ScientificPaper> testPapersWithText = testDataGenerator.generateTestPapersWithText(text, numberOfPapers);
 		
-		elasticsearchTemplate.bulkIndex(indexQueries);
-		elasticsearchTemplate.refresh(ScientificPaper.class);
+		return createIndexQueries(testPapersWithText);
 	}
 }

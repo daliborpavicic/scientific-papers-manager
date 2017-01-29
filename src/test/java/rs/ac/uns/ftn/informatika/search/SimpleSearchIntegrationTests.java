@@ -1,50 +1,83 @@
 package rs.ac.uns.ftn.informatika.search;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.apache.commons.lang.RandomStringUtils.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
 import rs.ac.uns.ftn.informatika.model.ScientificPaper;
-import rs.ac.uns.ftn.informatika.service.TestDataGenerator;
 
 public class SimpleSearchIntegrationTests extends AbstractSearchIntegrationTests {
 	
 	@Test
-	public void searchSimple_withEmptyQueryString() {
-		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("");
+	public void searchSimple_givenEmptyQueryString_shouldReturnEmptyList() {
+		List<IndexQuery> indexQueries = createSamplePapersWithText("randomText", 5);
 		
-		assertThat(searchResults.size(), is(0));
+		elasticsearchTemplate.bulkIndex(indexQueries);
+		elasticsearchTemplate.refresh(ScientificPaper.class);
+		
+		int resultsCount = scientificPaperSearcher.searchSimple("").size();
+		
+		assertThat(resultsCount, is(equalTo(0)));
 	}
 
 	@Test
-	public void searchSimple_withCommonStringWhichOccuresInAllDocuments() {
-		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("Title");
+	public void searchSimple_givenSearchString_shouldReturnAllMatches() {
+		List<ScientificPaper> testPapers = Arrays.asList(
+				ScientificPaper.builder().id(randomNumeric(5)).text("Information retrieval").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).title("Retrieval systems").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).anAbstract("Some random text").build());
 		
-		assertThat(searchResults.size(), is(10));
-	}
-
-	@Test
-	public void searchSimple_withStringWhichDoesNotOccureInIndex() {
-		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("nonexisting");;
+		List<IndexQuery> indexQueries = createIndexQueries(testPapers);
+		elasticsearchTemplate.bulkIndex(indexQueries);
+		elasticsearchTemplate.refresh(ScientificPaper.class);
 		
-		assertThat(searchResults.size(), is(0));
-	}
-
-	@Test
-	public void searchSimple_withPhraseWhichExistsInIndex() {
-		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("Title 1");
+		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("retrieval");
+		
+		assertThat(searchResults.size(), is(2));
+		
+		searchResults = scientificPaperSearcher.searchSimple("information");
 		
 		assertThat(searchResults.size(), is(1));
 	}
-	
+
 	@Test
-	public void searchSimple_withExistingCategoryName() {
-		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple(TestDataGenerator.CASE_REPORT);
+	public void searchSimple_givenNoMatchingSearchString_shouldReturnEmptyList() {
+		ScientificPaper paper = ScientificPaper.builder().id(randomNumeric(5)).text("Document management").build();
+		IndexQuery indexQuery = createIndexQuery(paper);
 		
-		assertThat(searchResults.size(), is(5));
+		elasticsearchTemplate.index(indexQuery);
+		
+		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("NonMatching");
+		
+		assertThat(searchResults.size(), is(0));
+	}
+
+	@Test
+	public void searchSimple_givenMultiWordSearchString_shouldMatchOnlyDocsContainingAllWords() {
+		List<ScientificPaper> testPapers = Arrays.asList(
+				ScientificPaper.builder().id(randomNumeric(5)).text("Information retrieval").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).title("Information").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).title("retrieval").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).title("Retrieval systems").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).anAbstract("Some random text").build());
+		
+		List<IndexQuery> indexQueries = createIndexQueries(testPapers);
+		elasticsearchTemplate.bulkIndex(indexQueries);
+		elasticsearchTemplate.refresh(ScientificPaper.class);
+		
+		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("information retrieval");
+		
+		assertThat(searchResults.size(), is(1));
+		
+		searchResults = scientificPaperSearcher.searchSimple("systems retrieval"); // notice different order of words comparing to matching document
+		
+		assertThat(searchResults.size(), is(1));
 	}
 
 }

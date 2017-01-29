@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
@@ -21,6 +22,8 @@ import rs.ac.uns.ftn.informatika.dto.ParsedScientificPaper;
 import rs.ac.uns.ftn.informatika.service.DocumentParserService;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 
+@RestController
+@RequestMapping("/paper")
 public class FileController {
 	
     private final StorageService storageService;

@@ -4,7 +4,7 @@ public class NewScientificPaper {
     public String title;
     public String anAbstract;
     public String keywords;
-    public Long categoryId;
+    public String categoryName;
     public String text;
     public String publishDate;
     public String authorName;

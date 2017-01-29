@@ -35,7 +35,7 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
 	public List<ScientificPaper> searchSimple(String query) {
     	SearchQuery searchQuery = buildSimpleSearchQuery(query);
     	
-    	logger.info(searchQuery.toString());
+    	logger.info(searchQuery.getQuery().toString());
 		
     	return elasticSearchTemplate.queryForList(searchQuery, ScientificPaper.class);
     }
@@ -54,7 +54,7 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
     	
     	SearchQuery searchQuery = buildAdvancedSearchQuery(queryParamsForFields);
     	
-    	logger.info(searchQuery.toString());
+    	logger.info(searchQuery.getQuery().toString());
     	
 		return elasticSearchTemplate.queryForList(searchQuery, ScientificPaper.class);
     }

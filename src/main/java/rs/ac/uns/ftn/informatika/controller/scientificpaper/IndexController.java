@@ -2,6 +2,8 @@ package rs.ac.uns.ftn.informatika.controller.scientificpaper;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import rs.ac.uns.ftn.informatika.service.StorageService;
 @RestController
 @RequestMapping("/paper")
 public class IndexController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     private final StorageService storageService;
 
@@ -41,6 +45,8 @@ public class IndexController {
         newScientificPaper.numberOfImages = documentParserService.extractImageNamesFromDocument(resource.getInputStream()).size();
         
         String documentId = scientificPaperIndexer.index(newScientificPaper);
+        
+        logger.info(String.format("Document [id = %s] is successfully added to an index.", documentId));
         
         return ResponseEntity
         		.ok()

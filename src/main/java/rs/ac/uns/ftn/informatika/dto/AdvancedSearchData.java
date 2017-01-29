@@ -10,4 +10,13 @@ public class AdvancedSearchData {
 	public FieldQueryParams authorNameParams;
 	public FieldQueryParams categoryParams;
 	public FieldQueryParams publishDateParams;
+	
+	@Override
+	public String toString() {
+		return "AdvancedSearchData [titleParams=" + titleParams + ", anAbstractParams=" + anAbstractParams
+				+ ", keywordsParams=" + keywordsParams + ", textParams=" + textParams + ", authorNameParams="
+				+ authorNameParams + ", categoryParams=" + categoryParams + ", publishDateParams=" + publishDateParams
+				+ "]";
+	}
+	
 }

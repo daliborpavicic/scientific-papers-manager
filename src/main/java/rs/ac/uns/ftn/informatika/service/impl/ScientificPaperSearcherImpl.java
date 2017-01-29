@@ -52,6 +52,10 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
     	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.CATEGORY.getFieldName(), advancedSearchData.categoryParams);
     	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.PUBLISH_DATE.getFieldName(), advancedSearchData.publishDateParams);
     	
+    	if (queryParamsForFields.isEmpty()) {
+    		throw new IllegalArgumentException(String.format("%s \n doesn't have any populated query strings.", advancedSearchData.toString()));
+    	}
+    	
     	SearchQuery searchQuery = buildAdvancedSearchQuery(queryParamsForFields);
     	
     	logger.info(searchQuery.getQuery().toString());

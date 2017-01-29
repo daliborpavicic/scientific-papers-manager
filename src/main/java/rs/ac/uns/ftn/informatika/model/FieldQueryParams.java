@@ -53,4 +53,10 @@ public class FieldQueryParams {
 		return !this.queryString.isEmpty();
 	}
 
+	@Override
+	public String toString() {
+		return "FieldQueryParams [queryString=" + queryString + ", queryType=" + queryType + ", boolOccurrence="
+				+ boolOccurrence + "]";
+	}
+
 }

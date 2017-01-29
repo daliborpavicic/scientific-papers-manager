@@ -18,7 +18,7 @@ public class ScientificPaper {
 	public static final String TYPE_NAME = "scientific-paper";
 
 	@Id
-	Long id;
+	String id;
 
 	@Field(type = FieldType.String, index = FieldIndex.analyzed, store = true)
 	String title;
@@ -54,7 +54,7 @@ public class ScientificPaper {
 	
 	public ScientificPaper() {}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -108,7 +108,7 @@ public class ScientificPaper {
 	}
 
 	public static class Builder {
-		private Long id;
+		private String id;
 		private String title;
 		private String anAbstract;
 		private String keywords;
@@ -119,7 +119,7 @@ public class ScientificPaper {
 		private Integer numberOfImages;
 		private String fileName;
 
-		public Builder id(Long id) {
+		public Builder id(String id) {
 			this.id = id;
 			return this;
 		}

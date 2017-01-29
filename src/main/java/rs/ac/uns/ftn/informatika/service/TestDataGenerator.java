@@ -13,6 +13,6 @@ public interface TestDataGenerator {
 	public static final String SPECIES_PAPER = "Species paper";
 	public static final String TECHNICAL_PAPER = "Technical paper";
 	
-	List<ScientificPaper> generateTestData();
+	List<ScientificPaper> generateTestPapersWithText(String text, int numberOfPapers);
 
 }

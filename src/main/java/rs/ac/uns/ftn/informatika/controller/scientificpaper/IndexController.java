@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.dto.NewScientificPaper;
 import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
-import rs.ac.uns.ftn.informatika.model.ScientificPaper;
 import rs.ac.uns.ftn.informatika.service.DocumentParserService;
 import rs.ac.uns.ftn.informatika.service.ScientificPaperIndexer;
 import rs.ac.uns.ftn.informatika.service.StorageService;
@@ -36,32 +35,16 @@ public class IndexController {
     }
 
     @RequestMapping(value="publish", method = RequestMethod.POST)
-    public ResponseEntity<ScientificPaper> publishScientificPaper(@RequestBody NewScientificPaper newScientificPaper) throws IOException {
+    public ResponseEntity<String> publishScientificPaper(@RequestBody NewScientificPaper newScientificPaper) throws IOException {
         Resource resource = storageService.loadAsResource(newScientificPaper.fileName);
         newScientificPaper.text = documentParserService.extractTextFromDocument(resource.getInputStream());
         newScientificPaper.numberOfImages = documentParserService.extractImageNamesFromDocument(resource.getInputStream()).size();
         
-        ScientificPaper indexedDocument = scientificPaperIndexer.index(newScientificPaper);
+        String documentId = scientificPaperIndexer.index(newScientificPaper);
         
         return ResponseEntity
         		.ok()
-        		.body(indexedDocument);
-    }
-    
-    @RequestMapping(value="", method = RequestMethod.GET)
-    public Iterable<ScientificPaper> listAllPapers() {
-    	Iterable<ScientificPaper> allScientificPapers = scientificPaperIndexer.findAll();
-		
-    	return allScientificPapers;
-    }
-    
-    @RequestMapping(value="", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteAllScientificPapers() {
-    	scientificPaperIndexer.deleteAll();
-    	
-    	return ResponseEntity
-    			.ok()
-    			.body("Successfully deleted all scientific papers from index!");
+        		.body(documentId);
     }
     
     @ExceptionHandler(StorageFileNotFoundException.class)

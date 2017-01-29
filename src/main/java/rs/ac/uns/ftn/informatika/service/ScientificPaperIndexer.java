@@ -5,12 +5,8 @@ import rs.ac.uns.ftn.informatika.model.ScientificPaper;
 
 public interface ScientificPaperIndexer {
 
-	ScientificPaper index(NewScientificPaper newScientificPaper);
+	String index(NewScientificPaper newScientificPaper);
 
-	Iterable<ScientificPaper> findAll();
-
-	void deleteAll();
-
-	ScientificPaper convertToDomainEntity(NewScientificPaper newScientificPaper);
+	ScientificPaper convertToDocument(NewScientificPaper newScientificPaper);
 
 }

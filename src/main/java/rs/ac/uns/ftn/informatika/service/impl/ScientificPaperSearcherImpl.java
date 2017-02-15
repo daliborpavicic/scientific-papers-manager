@@ -9,7 +9,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,14 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
 	private static final Logger logger = LoggerFactory.getLogger(ScientificPaperSearcherImpl.class);
 
     private ElasticsearchTemplate elasticSearchTemplate;
+    
+    private SearchResultMapper searchResultMapper;
 
 	@Autowired
-    public ScientificPaperSearcherImpl(ElasticsearchTemplate elasticSearchTemplate) {
+	public ScientificPaperSearcherImpl(ElasticsearchTemplate elasticSearchTemplate,
+			SearchResultMapper searchResultMapper) {
 		this.elasticSearchTemplate = elasticSearchTemplate;
+		this.searchResultMapper = searchResultMapper;
 	}
 	
     @Override
@@ -36,8 +42,10 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
     	SearchQuery searchQuery = buildSimpleSearchQuery(query);
     	
     	logger.info(searchQuery.getQuery().toString());
+    	
+    	Page<ScientificPaper> searchResults = elasticSearchTemplate.queryForPage(searchQuery, ScientificPaper.class, searchResultMapper);
 		
-    	return elasticSearchTemplate.queryForList(searchQuery, ScientificPaper.class);
+    	return searchResults.getContent();
     }
 
 	@Override
@@ -60,7 +68,9 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
     	
     	logger.info(searchQuery.getQuery().toString());
     	
-		return elasticSearchTemplate.queryForList(searchQuery, ScientificPaper.class);
+		Page<ScientificPaper> searchResults = elasticSearchTemplate.queryForPage(searchQuery, ScientificPaper.class, searchResultMapper);
+		
+		return searchResults.getContent();
     }
 	
 	private void addIfValidParams(HashMap<String, FieldQueryParams> queryParamsForFields, String fieldName,

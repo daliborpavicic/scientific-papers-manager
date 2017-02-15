@@ -15,10 +15,12 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
+import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 import rs.ac.uns.ftn.informatika.model.FieldQueryParams;
+import rs.ac.uns.ftn.informatika.model.ScientificPaperFieldName;
 
 public class SearchQueryBuilder {
 
@@ -26,14 +28,22 @@ public class SearchQueryBuilder {
 
 	public static SearchQuery buildSimpleSearchQuery(String query) {
 		QueryStringQueryBuilder stringQuery = buildSimpleStringQuery(query);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(stringQuery).build();
+		
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+				.withQuery(stringQuery)
+				.withHighlightFields(getHighlightFields())
+				.build();
 
 		return searchQuery;
 	}
 
 	public static SearchQuery buildAdvancedSearchQuery(HashMap<String, FieldQueryParams> queryParamsForFields) {
 		BoolQueryBuilder booleanQuery = buildBooleanQuery(queryParamsForFields);
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(booleanQuery).build();
+		
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+				.withQuery(booleanQuery)
+				.withHighlightFields(getHighlightFields())
+				.build();
 
 		return searchQuery;
 	}
@@ -41,6 +51,11 @@ public class SearchQueryBuilder {
 	private static QueryStringQueryBuilder buildSimpleStringQuery(String query) {
 		QueryStringQueryBuilder queryStringQuery = queryStringQuery(query);
 		queryStringQuery.defaultOperator(Operator.AND);
+		
+		for (String fieldName : ScientificPaperFieldName.queryFieldNames) {
+			queryStringQuery.field(fieldName);
+		}
+		
 		return queryStringQuery;
 	}
 
@@ -63,7 +78,7 @@ public class SearchQueryBuilder {
 			}
 
 		}
-
+		
 		return boolQuery;
 	}
 
@@ -107,5 +122,16 @@ public class SearchQueryBuilder {
 
 		return queryBuilder;
 	}
-
+	
+	private static HighlightBuilder.Field[] getHighlightFields() {
+		int highlightFieldsCount = ScientificPaperFieldName.highlightFieldNames.length;
+		HighlightBuilder.Field[] highlightFields = new HighlightBuilder.Field[highlightFieldsCount];
+		
+		for (int i = 0; i < highlightFieldsCount; i++) {
+			highlightFields[i] = new HighlightBuilder.Field(ScientificPaperFieldName.highlightFieldNames[i]);
+		}
+		
+		return highlightFields;
+	}
+	
 }

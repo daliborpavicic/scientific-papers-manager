@@ -149,6 +149,39 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		assertThat(searchResults.size(), is(equalTo(1)));
 	}
 	
+	@Test
+	public void searchAdvanced_givenPrefixQuery_shouldReturnMatches() {
+		List<ScientificPaper> testPapers = Arrays.asList(
+				ScientificPaper.builder().id(randomNumeric(5)).text("Apache lucene").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).text("Lucky guy").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).text("Elasticsearch and other stuff").build());
+
+		List<IndexQuery> indexQueries = createIndexQueries(testPapers);
+		elasticsearchTemplate.bulkIndex(indexQueries);
+		elasticsearchTemplate.refresh(ScientificPaper.class);
+		
+		AdvancedSearchData searchData = createSearchDataForTextField(
+				new FieldQueryParams("lu", PREFIX, MUST));
+		
+		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
+		
+		assertThat(searchResults.size(), is(equalTo(2)));
+		
+		searchData = createSearchDataForTextField(
+				new FieldQueryParams("luc", PREFIX, MUST_NOT));
+		
+		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
+		
+		assertThat(searchResults.size(), is(equalTo(1)));
+		
+		searchData = createSearchDataForTextField(
+				new FieldQueryParams("apach", PREFIX, SHOULD));
+		
+		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
+		
+		assertThat(searchResults.size(), is(equalTo(1)));
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void searchAdvanced_givenInvalidRangeQuery_shouldThrowException() {
 		String invalidRangeQuery = "fromString#toString";
@@ -222,15 +255,38 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		
 		assertThat(searchResults.size(), is(equalTo(2)));
 	}
-
-	@Test
-	public void searchAdvanced_givenPrefixQuery_shouldReturnMatches() {
-
-	}
 	
 	@Test
 	public void searchAdvanced_givenWildcardQuery_shouldReturnMatches() {
+		List<ScientificPaper> testPapers = Arrays.asList(
+				ScientificPaper.builder().id(randomNumeric(5)).text("Search test").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).text("Testing search").build(),
+				ScientificPaper.builder().id(randomNumeric(5)).text("Elasticsearch stuff").build());
 
+		List<IndexQuery> indexQueries = createIndexQueries(testPapers);
+		elasticsearchTemplate.bulkIndex(indexQueries);
+		elasticsearchTemplate.refresh(ScientificPaper.class);
+		
+		AdvancedSearchData searchData = createSearchDataForTextField(
+				new FieldQueryParams("sea?ch", WILDCARD, MUST));
+		
+		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
+		
+		assertThat(searchResults.size(), is(equalTo(2)));
+		
+		searchData = createSearchDataForTextField(
+				new FieldQueryParams("elastic*", WILDCARD, MUST_NOT));
+		
+		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
+		
+		assertThat(searchResults.size(), is(equalTo(2)));
+		
+		searchData = createSearchDataForTextField(
+				new FieldQueryParams("s*uff", WILDCARD, SHOULD));
+		
+		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
+		
+		assertThat(searchResults.size(), is(equalTo(1)));
 	}
 
 	public AdvancedSearchData createSearchDataForTextField(FieldQueryParams fieldQueryParams) {

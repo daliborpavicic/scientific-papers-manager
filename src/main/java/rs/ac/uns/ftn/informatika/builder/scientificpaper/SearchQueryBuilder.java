@@ -5,6 +5,7 @@ import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
 import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.wildcardQuery;
 
@@ -20,6 +21,8 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import rs.ac.uns.ftn.informatika.model.FieldQueryParams;
 
 public class SearchQueryBuilder {
+
+	private static final String RANGE_QUERY_REGEX = "\\s?\\|\\s?";
 
 	public static SearchQuery buildSimpleSearchQuery(String query) {
 		QueryStringQueryBuilder stringQuery = buildSimpleStringQuery(query);
@@ -82,7 +85,18 @@ public class SearchQueryBuilder {
 			queryBuilder = prefixQuery(fieldName, queryString);
 			break;
 		case RANGE:
-			// TODO: implement the logic for a range query
+			String[] queryTokens = queryString.split(RANGE_QUERY_REGEX);
+			boolean isValidQueryString = queryTokens.length == 2;
+			
+			if (isValidQueryString) {
+				String fromString = queryTokens[0];
+				String toString = queryTokens[1];
+				
+				queryBuilder = rangeQuery(fieldName).gte(fromString).lte(toString);
+			} else {
+				throw new IllegalArgumentException(String.format("%s is not valid range query. Required format is fromString|toString", queryString));
+			}
+			
 			break;
 		case WILDCARD:
 			queryBuilder = wildcardQuery(fieldName, queryString);

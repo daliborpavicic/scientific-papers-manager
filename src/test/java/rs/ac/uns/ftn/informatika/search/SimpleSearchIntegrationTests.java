@@ -1,8 +1,9 @@
 package rs.ac.uns.ftn.informatika.search;
 
-import static org.apache.commons.lang.RandomStringUtils.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.commons.lang.RandomStringUtils.randomNumeric;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,4 +81,22 @@ public class SimpleSearchIntegrationTests extends AbstractSearchIntegrationTests
 		assertThat(searchResults.size(), is(1));
 	}
 
+	@Test
+	public void searchSimple_givenQueryForFields_shouldReturnHighlightedText() {
+		String paperText = "This is a content text in a paper.";
+		String highlightedText = "This is a content <em>text</em> in a paper. ";
+		
+		ScientificPaper testPaper = ScientificPaper.builder()
+				.id(randomNumeric(5))
+				.text(paperText)
+				.build();
+		
+		IndexQuery indexQuery = createIndexQuery(testPaper);
+		elasticsearchTemplate.index(indexQuery);
+		elasticsearchTemplate.refresh(ScientificPaper.class);
+		
+		List<ScientificPaper> searchResults = scientificPaperSearcher.searchSimple("text");
+		
+		assertThat(searchResults.get(0).getHighlightedText(), is(highlightedText));
+	}
 }

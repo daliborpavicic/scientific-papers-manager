@@ -288,6 +288,31 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		
 		assertThat(searchResults.size(), is(equalTo(1)));
 	}
+	
+	@Test
+	public void searchAdvanced_givenQueryForFields_shouldReturnHighlightedText() {
+		String paperAbstract = "This is an abstract text in a paper.";
+		String paperText = "This is a content text in a paper.";
+		String highlightedText = "This is an abstract <em>text</em> in a paper. This is a content <em>text</em> in a paper. ";
+		
+		ScientificPaper testPaper = ScientificPaper.builder()
+				.id(randomNumeric(5))
+				.anAbstract(paperAbstract)
+				.text(paperText)
+				.build();
+		
+		IndexQuery indexQuery = createIndexQuery(testPaper);
+		elasticsearchTemplate.index(indexQuery);
+		elasticsearchTemplate.refresh(ScientificPaper.class);
+		
+		AdvancedSearchData searchData = new AdvancedSearchData();
+		searchData.anAbstractParams = new FieldQueryParams("text");
+		searchData.textParams = new FieldQueryParams("text");
+		
+		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
+		
+		assertThat(searchResults.get(0).getHighlightedText(), is(highlightedText));
+	}
 
 	public AdvancedSearchData createSearchDataForTextField(FieldQueryParams fieldQueryParams) {
 		AdvancedSearchData searchData = new AdvancedSearchData();

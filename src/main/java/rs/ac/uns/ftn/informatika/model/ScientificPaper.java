@@ -16,6 +16,8 @@ public class ScientificPaper {
 
 	public static final String INDEX_NAME = "papers";
 	public static final String TYPE_NAME = "scientific-paper";
+	
+	public static final String DATE_PATTERN = "yyyy-MM-dd";
 
 	@Id
 	String id;
@@ -32,11 +34,11 @@ public class ScientificPaper {
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed, store = true)
 	String categoryName;
 
-	@Field(type = FieldType.String, index = FieldIndex.analyzed, store = false)
+	@Field(type = FieldType.String, index = FieldIndex.analyzed, store = true)
 	String text;
 
 	@Field(type = FieldType.Date, format = DateFormat.year_month_day, index = FieldIndex.not_analyzed, store = true)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN)
 	Date publishDate;
 
 	@Field(type = FieldType.String, index = FieldIndex.analyzed, store = true)
@@ -47,6 +49,8 @@ public class ScientificPaper {
 
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed, store = true)
 	String fileName;
+	
+	String highlightedText;
 
 	public static Builder builder() {
 		return new Builder();
@@ -93,6 +97,10 @@ public class ScientificPaper {
 	public String getFileName() {
 		return fileName;
 	}
+	
+	public String getHighlightedText() {
+		return highlightedText;
+	}
 
 	private ScientificPaper(Builder builder) {
 		this.id = builder.id;
@@ -105,6 +113,7 @@ public class ScientificPaper {
 		this.authorName = builder.authorName;
 		this.numberOfImages = builder.numberOfImages;
 		this.fileName = builder.fileName;
+		this.highlightedText = builder.highlightedText;
 	}
 
 	public static class Builder {
@@ -118,6 +127,7 @@ public class ScientificPaper {
 		private String authorName;
 		private Integer numberOfImages;
 		private String fileName;
+		private String highlightedText;
 
 		public Builder id(String id) {
 			this.id = id;
@@ -166,6 +176,11 @@ public class ScientificPaper {
 
 		public Builder fileName(String fileName) {
 			this.fileName = fileName;
+			return this;
+		}
+		
+		public Builder highlightedText(String highlightedText) {
+			this.highlightedText = highlightedText;
 			return this;
 		}
 

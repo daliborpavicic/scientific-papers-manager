@@ -9,7 +9,7 @@ public enum ScientificPaperFieldName {
 	PUBLISH_DATE("publishDate"),
 	AUTHOR("authorName");
 	
-    public static final String[] scientificPaperQueryFields = {
+    public static final String[] queryFieldNames = {
     		TITLE.getFieldName(),
     		ABSTRACT.getFieldName(),
     		KEYWORDS.getFieldName(),
@@ -17,6 +17,11 @@ public enum ScientificPaperFieldName {
     		TEXT.getFieldName(),
     		PUBLISH_DATE.getFieldName(),
     		AUTHOR.getFieldName()
+    };
+    
+    public static final String[] highlightFieldNames = {
+    		ABSTRACT.getFieldName(),
+    		TEXT.getFieldName()
     };
 	
 	private String fieldName;

@@ -44,7 +44,7 @@ public class ScientificPaperIndexerImpl implements ScientificPaperIndexer {
 			.keywords(newScientificPaper.keywords)
 			.categoryName(newScientificPaper.categoryName) // TODO: Retrieve the category name from DB. Category ID will be provided in DTO which comes from the client
 			.text(newScientificPaper.text)
-			.publishDate(new Date()) // TODO: Set date to current date string
+			.publishDate(new Date())
 			.authorName("default_author") // TODO: Set author name to the name of currently logged user after security is implemented
 			.numberOfImages(newScientificPaper.numberOfImages)
 			.fileName(newScientificPaper.fileName)

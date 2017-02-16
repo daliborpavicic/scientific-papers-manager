@@ -10,5 +10,7 @@ public interface ScientificPaperSearcher {
 	List<ScientificPaper> searchSimple(String query);
 
 	List<ScientificPaper> searchAdvanced(AdvancedSearchData advancedSearchData);
+	
+	List<ScientificPaper> searchMoreLikeThis(String documentId);
 
 }

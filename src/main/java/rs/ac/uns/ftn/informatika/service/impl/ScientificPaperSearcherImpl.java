@@ -1,11 +1,14 @@
 package rs.ac.uns.ftn.informatika.service.impl;
 
 import static rs.ac.uns.ftn.informatika.builder.scientificpaper.SearchQueryBuilder.buildAdvancedSearchQuery;
+import static rs.ac.uns.ftn.informatika.builder.scientificpaper.SearchQueryBuilder.buildMoreLikeThisSearchQuery;
 import static rs.ac.uns.ftn.informatika.builder.scientificpaper.SearchQueryBuilder.buildSimpleSearchQuery;
 
 import java.util.HashMap;
 import java.util.List;
 
+import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
+import org.elasticsearch.index.query.MoreLikeThisQueryBuilder.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +76,16 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
 		return searchResults.getContent();
     }
 	
+	@Override
+	public List<ScientificPaper> searchMoreLikeThis(String documentId) {
+		Item moreLikeThisItem = new MoreLikeThisQueryBuilder.Item(ScientificPaper.INDEX_NAME, ScientificPaper.TYPE_NAME, documentId);
+		SearchQuery searchQuery = buildMoreLikeThisSearchQuery(moreLikeThisItem);
+		
+		Page<ScientificPaper> searchResults = elasticSearchTemplate.queryForPage(searchQuery, ScientificPaper.class, searchResultMapper);
+		
+		return searchResults.getContent();
+	}
+	
 	private void addIfValidParams(HashMap<String, FieldQueryParams> queryParamsForFields, String fieldName,
 			FieldQueryParams fieldQueryParams) {
 		if (isFieldParamsValid(fieldQueryParams)) {
@@ -87,4 +100,5 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
 		
 		return fieldQueryParams.isValid();
 	}
+
 }

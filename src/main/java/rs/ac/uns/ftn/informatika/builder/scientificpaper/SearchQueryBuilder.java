@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.builder.scientificpaper;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchPhraseQuery;
+import static org.elasticsearch.index.query.QueryBuilders.moreLikeThisQuery;
 import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
@@ -12,6 +13,8 @@ import static org.elasticsearch.index.query.QueryBuilders.wildcardQuery;
 import java.util.HashMap;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
+import org.elasticsearch.index.query.MoreLikeThisQueryBuilder.Item;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
@@ -33,7 +36,7 @@ public class SearchQueryBuilder {
 				.withQuery(stringQuery)
 				.withHighlightFields(getHighlightFields())
 				.build();
-
+		
 		return searchQuery;
 	}
 
@@ -47,7 +50,20 @@ public class SearchQueryBuilder {
 
 		return searchQuery;
 	}
-
+	
+	public static SearchQuery buildMoreLikeThisSearchQuery(Item likeItem) {
+		MoreLikeThisQueryBuilder moreLikeThisQuery = moreLikeThisQuery()
+				.addLikeItem(likeItem)
+				.minTermFreq(0)
+				.minDocFreq(0);
+		
+		SearchQuery searchQuery = new NativeSearchQueryBuilder()
+				.withQuery(moreLikeThisQuery)
+				.build();
+		
+		return searchQuery;
+	}
+	
 	private static QueryStringQueryBuilder buildSimpleStringQuery(String query) {
 		QueryStringQueryBuilder queryStringQuery = queryStringQuery(query);
 		queryStringQuery.defaultOperator(Operator.AND);

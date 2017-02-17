@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.controller.scientificpaper;
 
+import static rs.ac.uns.ftn.informatika.controller.HomeController.BASE_API_URL;
+
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -20,7 +22,7 @@ import rs.ac.uns.ftn.informatika.service.ScientificPaperIndexer;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 
 @RestController
-@RequestMapping("/paper")
+@RequestMapping(BASE_API_URL + "/paper")
 public class IndexController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);

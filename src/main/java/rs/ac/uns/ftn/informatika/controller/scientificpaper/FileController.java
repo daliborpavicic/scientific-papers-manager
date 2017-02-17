@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.controller.scientificpaper;
 
+import static rs.ac.uns.ftn.informatika.controller.HomeController.BASE_API_URL;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +25,7 @@ import rs.ac.uns.ftn.informatika.service.DocumentParserService;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 
 @RestController
-@RequestMapping("/paper")
+@RequestMapping(BASE_API_URL + "/paper")
 public class FileController {
 	
     private final StorageService storageService;

@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.controller.scientificpaper;
 
+import static rs.ac.uns.ftn.informatika.controller.HomeController.BASE_API_URL;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +14,7 @@ import rs.ac.uns.ftn.informatika.model.ScientificPaper;
 import rs.ac.uns.ftn.informatika.service.ScientificPaperSearcher;
 
 @RestController
-@RequestMapping("/paper")
+@RequestMapping(BASE_API_URL + "/paper")
 public class SearchController {
 
 	private final ScientificPaperSearcher scientificPaperSearcher;

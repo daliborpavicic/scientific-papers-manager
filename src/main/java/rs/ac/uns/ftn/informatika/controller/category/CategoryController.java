@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.informatika.model.Category;
 import rs.ac.uns.ftn.informatika.service.CategoryService;
 
+import static rs.ac.uns.ftn.informatika.controller.HomeController.BASE_API_URL;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/papers/")
+@RequestMapping(BASE_API_URL + "/paper")
 public class CategoryController {
 
     private CategoryService categoryService;

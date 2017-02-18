@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.configuration;
 
+import static rs.ac.uns.ftn.informatika.utils.FilePathConstants.ELASTIC_SEARCH_INDEX_FOLDER;
+
 import java.net.InetSocketAddress;
 
 import javax.annotation.Resource;
@@ -15,11 +17,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
 @PropertySource(value = "classpath:elasticsearch.properties")
-@EnableElasticsearchRepositories("rs.ac.uns.ftn.informatika")
 public class ElasticsearchConfiguration {
 
 	@Resource
@@ -52,7 +52,7 @@ public class ElasticsearchConfiguration {
 	@Bean
 	public Client nodeClient() {
 		Settings settings = Settings.builder()
-				.put("path.home", "target/elastic")
+				.put("path.home", ELASTIC_SEARCH_INDEX_FOLDER)
 				.build();
 		
 		final Node node = new NodeBuilder()

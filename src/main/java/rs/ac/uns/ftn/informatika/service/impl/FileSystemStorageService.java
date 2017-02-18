@@ -6,6 +6,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rs.ac.uns.ftn.informatika.configuration.StorageProperties;
 import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
 import rs.ac.uns.ftn.informatika.service.StorageService;
@@ -20,6 +22,9 @@ import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileSystemStorageService.class);
+    
     private final Path rootLocation;
 
     @Autowired
@@ -29,15 +34,20 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public String store(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+
         try {
             if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
+                throw new StorageException("Failed to store empty file " + fileName);
             }
-            // todo: Make sure that file name doesn't exist in the directory already
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-            return file.getOriginalFilename();
+            // TODO: Make sure that file name doesn't exist in the directory already
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(fileName));
+            
+            logger.info(String.format("Successfully saved '%s' to '%s'", fileName, rootLocation));
+            
+            return fileName;
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
+            throw new StorageException("Failed to store file " + fileName, e);
         }
     }
 
@@ -84,6 +94,8 @@ public class FileSystemStorageService implements StorageService {
     public void init() {
         try {
             Files.createDirectory(rootLocation);
+            
+            logger.info(String.format("Created directory '%s' for file uploads", rootLocation));
         } catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
         }

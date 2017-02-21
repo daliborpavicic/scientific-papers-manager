@@ -4,10 +4,10 @@
   "description": "Front end of web application for managing and searching of the scientific papers",
   "scripts": {
     "prestart": "npm-run-all start-message clean-dist copy-files compile-sass",
-    "start": "npm-run-all --parallel compile-dev-js lint-watch sass-watch serve",
+    "start": "npm-run-all --parallel compile-dev-js sass-watch serve",
     "start-message": "babel-node build/startMessage.js",
     "compile-dev-js": "babel-node build/compileDev.js",
-    "compile-sass": "node-sass --output-style expanded src/styles/index.scss dist/main.css",
+    "compile-sass": "node-sass --output-style compressed src/styles/index.scss dist/main.css",
     "sass-watch": "npm run compile-sass -- --watch",
     "copy-files": "copyfiles index.html dist",
     "lint": "esw webpack.config.* src build --color",
@@ -46,6 +46,9 @@
     "babel": "inherit"
   },
   "dependencies": {
+    "bulma": "^0.3.1",
+    "mobx": "^3.1.0",
+    "mobx-react": "^4.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "whatwg-fetch": "1.0.0"

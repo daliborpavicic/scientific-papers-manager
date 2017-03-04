@@ -31,6 +31,8 @@ public class PdfParserService implements DocumentParserService {
         PDDocument document = PDDocument.load(documentInputStream);
         PDDocumentCatalog catalog = document.getDocumentCatalog();
         PDMetadata meta = catalog.getMetadata();
+        
+        parsedScientificPaper.text = extractTextFromPDDocument(document);
 
         if (meta != null) {
             DomXmpParser xmpParser = new DomXmpParser();
@@ -71,9 +73,14 @@ public class PdfParserService implements DocumentParserService {
     @Override
     public String extractTextFromDocument(InputStream documentInputStream) throws IOException {
         PDDocument document = PDDocument.load(documentInputStream);
-        PDFTextStripper textStripper = new PDFTextStripper();
-        String pdfText = textStripper.getText(document);
 
+        return extractTextFromPDDocument(document);
+    }
+    
+    private String extractTextFromPDDocument(PDDocument pdDocument) throws IOException {
+    	PDFTextStripper textStripper = new PDFTextStripper();
+        String pdfText = textStripper.getText(pdDocument);
+        
         return pdfText;
     }
 

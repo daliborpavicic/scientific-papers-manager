@@ -42,12 +42,22 @@ function formFactory(formFields = {}) {
     isValid: () => state.isValid,
     isDirty: () => state.isDirty,
     getFields: () => state.fields,
-    getFieldValue: fieldName => state.fields[fieldName],
+    getFieldValue: fieldName => state.fieldValues[fieldName],
     getAllValues: () => state.fieldValues,
 
+    modifyFields: action('modify fields', (modifierFn, fieldsToModify = state.fieldNames) => {
+      if (typeof modifierFn === 'function') {
+        fieldsToModify.forEach((fieldName) => {
+          const field = state.fields[fieldName];
+          modifierFn(field);
+        });
+      } else {
+        throw new Error(`Expected function as first parameter but received ${typeof modifierFn}`);
+      }
+    }),
     reset: action('reset', () => {
       state.fieldNames.forEach(name => state.fields[name].reset());
-    })
+    }),
   };
 
   return publicAPI;

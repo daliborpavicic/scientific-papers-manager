@@ -12,6 +12,7 @@ function formFieldFactory({
     label,
     value: initialValue,
     isTouched: false,
+    isEnabled: true,
     validators: observable.ref(validators),
     get errors() {
       return this.validators
@@ -32,6 +33,7 @@ function formFieldFactory({
   const publicAPI = {
     // region Getters
     isTouched: () => state.isTouched,
+    isEnabled: () => state.isEnabled,
     getName: () => state.name,
     getValue: () => state.value,
     getLabel: () => state.label,
@@ -49,6 +51,14 @@ function formFieldFactory({
     setValue: action('setValue', (value) => {
       state.value = value;
       state.isTouched = true;
+    }),
+
+    disable: action('disableField', () => {
+      state.isEnabled = false;
+    }),
+
+    enable: action('enableField', () => {
+      state.isEnabled = true;
     }),
 
     setLabel: action('setLabel', (labelValue) => {

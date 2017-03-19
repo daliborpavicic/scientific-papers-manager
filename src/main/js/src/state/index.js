@@ -1,6 +1,6 @@
-import authStore from './stores/authStore';
-import publishPaperStore from './stores/publishPaperStore';
-import searchPapersStore from './stores/searchPapersStore';
+import authStore from './auth/authStore';
+import publishPaperStore from './publish/publishPaperStore';
+import searchPapersStore from './search/searchPapersStore';
 
 export {
   authStore,

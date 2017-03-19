@@ -1,18 +1,10 @@
 import { observable, action } from 'mobx';
-import formFactory from '../factories/formFactory';
+import formFactory from '../common/factories/formFactory';
+import { uploadPaperFields, publishPaperFields } from './config';
 import { uploadPaper, publishPaper } from '../../api/paperApi';
 
-const uploadPaperForm = formFactory({
-  paperFile: { label: 'No file chosen' }
-});
-
-const paperMetadataForm = formFactory({
-  title: { label: 'Title' },
-  anAbstract: { label: 'Abstract' },
-  keywords: { label: 'Keywords' },
-  categoryName: { label: 'Category' },
-  text: { label: 'Text' }
-});
+const uploadPaperForm = formFactory(uploadPaperFields);
+const paperMetadataForm = formFactory(publishPaperFields);
 
 const publishPaperStore = (() => {
   const state = observable({
@@ -23,7 +15,7 @@ const publishPaperStore = (() => {
     const paperFile = uploadPaperForm.getFieldValue('paperFile');
 
     uploadPaper(paperFile).then((parsedPaper) => {
-      const fieldsToModify = ['title', 'keywords', 'text'];
+      const fieldsToModify = ['titleQuery', 'keywords', 'text'];
 
       paperMetadataForm.modifyFields((field) => {
         const fieldName = field.getName();

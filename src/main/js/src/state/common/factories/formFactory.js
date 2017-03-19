@@ -42,6 +42,7 @@ function formFactory(formFields = {}) {
     isValid: () => state.isValid,
     isDirty: () => state.isDirty,
     getFields: () => state.fields,
+    getField: fieldName => state.fields[fieldName],
     getFieldValue: fieldName => state.fieldValues[fieldName],
     getAllValues: () => state.fieldValues,
 

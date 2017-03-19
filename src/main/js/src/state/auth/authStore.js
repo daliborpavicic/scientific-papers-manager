@@ -1,5 +1,5 @@
-import formFactory from '../factories/formFactory';
-import { isRequired } from '../validation/supportedValidators';
+import formFactory from '../common/factories/formFactory';
+import { isRequired } from '../common/validation/supportedValidators';
 
 const loginForm = formFactory({
   username: { label: 'Username', validators: [isRequired] },

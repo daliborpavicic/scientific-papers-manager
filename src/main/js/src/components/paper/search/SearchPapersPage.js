@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react';
 import { observer } from 'mobx-react';
+import Protected from '../../security/Protected';
 
 const SearchPapersPage = () => {
+  console.log('render search...');
+
   return (
     <div>SearchPapersPage</div>
   );
@@ -9,4 +12,4 @@ const SearchPapersPage = () => {
 
 SearchPapersPage.propTypes = {};
 
-export default observer(SearchPapersPage);
+export default Protected(observer(SearchPapersPage));

@@ -13,6 +13,10 @@ public interface TestDataGenerator {
 	public static final String SPECIES_PAPER = "Species paper";
 	public static final String TECHNICAL_PAPER = "Technical paper";
 	
+	public static final String[] ALL_CATEGORIES = {
+			RESEARCH_PAPER, CASE_REPORT, POSITION_PAPER, REVIEW_ARTICLE, SPECIES_PAPER, TECHNICAL_PAPER
+	};
+	
 	List<ScientificPaper> generateTestPapersWithText(String text, int numberOfPapers);
 
 }

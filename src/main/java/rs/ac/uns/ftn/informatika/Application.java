@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import rs.ac.uns.ftn.informatika.configuration.ElasticsearchConfiguration;
 import rs.ac.uns.ftn.informatika.configuration.StorageProperties;
+import rs.ac.uns.ftn.informatika.service.CategoryService;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 
 @SpringBootApplication
@@ -40,10 +41,13 @@ public class Application {
     }
 
 	@Bean
-	CommandLineRunner init(StorageService storageService) {
+	CommandLineRunner init(StorageService storageService, CategoryService categoryService) {
 		return (args) -> {
 			storageService.deleteAll();
+			categoryService.deleteAll();
+			
             storageService.init();
+            categoryService.init();
             
 			logger.info("scientific-papers-manager is up and running...");
 		};

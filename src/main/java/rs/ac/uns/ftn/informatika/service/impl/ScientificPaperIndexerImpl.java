@@ -9,7 +9,9 @@ import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import rs.ac.uns.ftn.informatika.dto.NewScientificPaper;
+import rs.ac.uns.ftn.informatika.model.Category;
 import rs.ac.uns.ftn.informatika.model.ScientificPaper;
+import rs.ac.uns.ftn.informatika.service.CategoryService;
 import rs.ac.uns.ftn.informatika.service.ScientificPaperIndexer;
 
 @Service
@@ -17,9 +19,12 @@ public class ScientificPaperIndexerImpl implements ScientificPaperIndexer {
 
 	private ElasticsearchTemplate elasticsearchTemplate;
 	
+	private CategoryService categoryService;
+	
 	@Autowired
-	public ScientificPaperIndexerImpl(ElasticsearchTemplate elasticsearchTemplate) {
+	public ScientificPaperIndexerImpl(ElasticsearchTemplate elasticsearchTemplate, CategoryService categoryService) {
 		this.elasticsearchTemplate = elasticsearchTemplate;
+		this.categoryService = categoryService;
 	}
 
 	@Override
@@ -38,11 +43,13 @@ public class ScientificPaperIndexerImpl implements ScientificPaperIndexer {
 
 	@Override
 	public ScientificPaper convertToDocument(NewScientificPaper newScientificPaper) {
+		Category paperCategory = categoryService.findCategoryByName(newScientificPaper.categoryName);
+		
 		ScientificPaper domainEntity = ScientificPaper.builder()
 			.title(newScientificPaper.title)
 			.anAbstract(newScientificPaper.anAbstract)
 			.keywords(newScientificPaper.keywords)
-			.categoryName(newScientificPaper.categoryName) // TODO: Retrieve the category name from DB. Category ID will be provided in DTO which comes from the client
+			.categoryName(paperCategory != null ? paperCategory.getName() : "default_category") // TODO: Use validation to prevent null value
 			.text(newScientificPaper.text)
 			.publishDate(new Date())
 			.authorName("default_author") // TODO: Set author name to the name of currently logged user after security is implemented

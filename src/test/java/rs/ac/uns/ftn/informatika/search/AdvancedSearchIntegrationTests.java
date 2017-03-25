@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
-import rs.ac.uns.ftn.informatika.dto.AdvancedSearchData;
+import rs.ac.uns.ftn.informatika.dto.AdvancedSearchParams;
 import rs.ac.uns.ftn.informatika.model.FieldQueryParams;
 import rs.ac.uns.ftn.informatika.model.ScientificPaper;
 
@@ -22,14 +22,14 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void searchAdvanced_withEmptySearchData_shouldThrowException() {
-		AdvancedSearchData emptySearchData = new AdvancedSearchData();
+		AdvancedSearchParams emptySearchData = new AdvancedSearchParams();
 		
 		scientificPaperSearcher.searchAdvanced(emptySearchData);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void searchAdvanced_givenDefaultParamsForOneField_shouldThrowException() {
-		AdvancedSearchData searchData = createSearchDataForTextField(new FieldQueryParams());
+		AdvancedSearchParams searchData = createSearchDataForTextField(new FieldQueryParams());
 		
 		scientificPaperSearcher.searchAdvanced(searchData);
 	}
@@ -41,7 +41,7 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		elasticsearchTemplate.bulkIndex(indexQueries);
 		elasticsearchTemplate.refresh(ScientificPaper.class);
 
-		AdvancedSearchData searchData = createSearchDataForTextField(new FieldQueryParams("information"));
+		AdvancedSearchParams searchData = createSearchDataForTextField(new FieldQueryParams("information"));
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
@@ -60,7 +60,7 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		elasticsearchTemplate.refresh(ScientificPaper.class);
 		
 		
-		AdvancedSearchData searchData = createSearchDataForTextField(
+		AdvancedSearchParams searchData = createSearchDataForTextField(
 				new FieldQueryParams("information", DEFAULT, MUST));
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
@@ -93,7 +93,7 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		elasticsearchTemplate.bulkIndex(indexQueries);
 		elasticsearchTemplate.refresh(ScientificPaper.class);
 		
-		AdvancedSearchData searchData = createSearchDataForTextField(
+		AdvancedSearchParams searchData = createSearchDataForTextField(
 				new FieldQueryParams("foam", FUZZY, MUST));
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
@@ -127,7 +127,7 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		elasticsearchTemplate.bulkIndex(indexQueries);
 		elasticsearchTemplate.refresh(ScientificPaper.class);
 		
-		AdvancedSearchData searchData = createSearchDataForTextField(
+		AdvancedSearchParams searchData = createSearchDataForTextField(
 				new FieldQueryParams("information retrieval", PHRASE, MUST));
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
@@ -160,7 +160,7 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		elasticsearchTemplate.bulkIndex(indexQueries);
 		elasticsearchTemplate.refresh(ScientificPaper.class);
 		
-		AdvancedSearchData searchData = createSearchDataForTextField(
+		AdvancedSearchParams searchData = createSearchDataForTextField(
 				new FieldQueryParams("lu", PREFIX, MUST));
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
@@ -186,7 +186,7 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 	public void searchAdvanced_givenInvalidRangeQuery_shouldThrowException() {
 		String invalidRangeQuery = "fromString#toString";
 		
-		AdvancedSearchData searchData = createSearchDataForTextField(
+		AdvancedSearchParams searchData = createSearchDataForTextField(
 				new FieldQueryParams(invalidRangeQuery, RANGE, MUST));
 		
 		scientificPaperSearcher.searchAdvanced(searchData);
@@ -207,19 +207,19 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		
 		String validRangeQuery = "a|b";
 		
-		AdvancedSearchData searchData = new AdvancedSearchData();
-		searchData.titleParams = new FieldQueryParams(validRangeQuery, RANGE, MUST);
+		AdvancedSearchParams searchData = new AdvancedSearchParams();
+		searchData.title = new FieldQueryParams(validRangeQuery, RANGE, MUST);
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
 		assertThat(searchResults.size(), is(equalTo(4)));
 		
-		searchData.titleParams = new FieldQueryParams(validRangeQuery, RANGE, MUST_NOT);
+		searchData.title = new FieldQueryParams(validRangeQuery, RANGE, MUST_NOT);
 		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
 		assertThat(searchResults.size(), is(equalTo(1)));
 		
-		searchData.titleParams = new FieldQueryParams(validRangeQuery, RANGE, SHOULD);
+		searchData.title = new FieldQueryParams(validRangeQuery, RANGE, SHOULD);
 		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
 		assertThat(searchResults.size(), is(equalTo(4)));
@@ -238,19 +238,19 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		
 		String validRangeQuery = "2016-10-10|2016-10-30";
 		
-		AdvancedSearchData searchData = new AdvancedSearchData();
-		searchData.publishDateParams = new FieldQueryParams(validRangeQuery, RANGE, MUST);
+		AdvancedSearchParams searchData = new AdvancedSearchParams();
+		searchData.publishDate = new FieldQueryParams(validRangeQuery, RANGE, MUST);
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
 		assertThat(searchResults.size(), is(equalTo(2)));
 		
-		searchData.publishDateParams = new FieldQueryParams(validRangeQuery, RANGE, MUST_NOT);
+		searchData.publishDate = new FieldQueryParams(validRangeQuery, RANGE, MUST_NOT);
 		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
 		assertThat(searchResults.size(), is(equalTo(1)));
 		
-		searchData.publishDateParams = new FieldQueryParams(validRangeQuery, RANGE, SHOULD);
+		searchData.publishDate = new FieldQueryParams(validRangeQuery, RANGE, SHOULD);
 		searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
 		assertThat(searchResults.size(), is(equalTo(2)));
@@ -267,7 +267,7 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		elasticsearchTemplate.bulkIndex(indexQueries);
 		elasticsearchTemplate.refresh(ScientificPaper.class);
 		
-		AdvancedSearchData searchData = createSearchDataForTextField(
+		AdvancedSearchParams searchData = createSearchDataForTextField(
 				new FieldQueryParams("sea?ch", WILDCARD, MUST));
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
@@ -305,18 +305,18 @@ public class AdvancedSearchIntegrationTests extends AbstractSearchIntegrationTes
 		elasticsearchTemplate.index(indexQuery);
 		elasticsearchTemplate.refresh(ScientificPaper.class);
 		
-		AdvancedSearchData searchData = new AdvancedSearchData();
-		searchData.anAbstractParams = new FieldQueryParams("text");
-		searchData.textParams = new FieldQueryParams("text");
+		AdvancedSearchParams searchData = new AdvancedSearchParams();
+		searchData.anAbstract = new FieldQueryParams("text");
+		searchData.text = new FieldQueryParams("text");
 		
 		List<ScientificPaper> searchResults = scientificPaperSearcher.searchAdvanced(searchData);
 		
 		assertThat(searchResults.get(0).getHighlightedText(), is(highlightedText));
 	}
 
-	public AdvancedSearchData createSearchDataForTextField(FieldQueryParams fieldQueryParams) {
-		AdvancedSearchData searchData = new AdvancedSearchData();
-		searchData.textParams = fieldQueryParams;
+	public AdvancedSearchParams createSearchDataForTextField(FieldQueryParams fieldQueryParams) {
+		AdvancedSearchParams searchData = new AdvancedSearchParams();
+		searchData.text = fieldQueryParams;
 		
 		return searchData;
 	}

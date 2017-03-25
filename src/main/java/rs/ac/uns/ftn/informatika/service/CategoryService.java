@@ -1,32 +1,21 @@
 package rs.ac.uns.ftn.informatika.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import rs.ac.uns.ftn.informatika.model.Category;
-import rs.ac.uns.ftn.informatika.repository.CategoryRepository;
-
 import java.util.List;
 
-@Service
-public class CategoryService {
+import rs.ac.uns.ftn.informatika.model.Category;
 
-    private CategoryRepository categoryRepository;
+public interface CategoryService {
 
-    @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+	void init();
+	
+	void deleteAll();
 
-    public List<Category> findAllCategories() {
-        return categoryRepository.findAll();
-    }
+	List<Category> findAllCategories();
 
-    public Category createCategory(Category category) {
-        return categoryRepository.saveAndFlush(category);
-    }
+	Category createCategory(Category category);
 
-    public void deleteCategory(Integer categoryId) {
-        categoryRepository.delete(categoryId);
-    }
+	void deleteCategory(Integer categoryId);
+
+	Category findCategoryByName(String categoryName);
+
 }

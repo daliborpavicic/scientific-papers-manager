@@ -19,6 +19,15 @@ public enum ScientificPaperFieldName {
     		AUTHOR.getFieldName()
     };
     
+    public static final String[] simpleSearchFieldNames = {
+    		TITLE.getFieldName(),
+    		ABSTRACT.getFieldName(),
+    		KEYWORDS.getFieldName(),
+    		CATEGORY.getFieldName(),
+    		TEXT.getFieldName(),
+    		AUTHOR.getFieldName()
+    };
+
     public static final String[] highlightFieldNames = {
     		ABSTRACT.getFieldName(),
     		TEXT.getFieldName()

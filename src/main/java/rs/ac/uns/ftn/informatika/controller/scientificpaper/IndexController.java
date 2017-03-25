@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.dto.NewScientificPaper;
+import rs.ac.uns.ftn.informatika.dto.PublishPaperResponse;
 import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
 import rs.ac.uns.ftn.informatika.service.DocumentParserService;
 import rs.ac.uns.ftn.informatika.service.ScientificPaperIndexer;
@@ -41,18 +42,20 @@ public class IndexController {
     }
 
     @RequestMapping(value="publish", method = RequestMethod.POST)
-    public ResponseEntity<String> publishScientificPaper(@RequestBody NewScientificPaper newScientificPaper) throws IOException {
+    public ResponseEntity<PublishPaperResponse> publishScientificPaper(@RequestBody NewScientificPaper newScientificPaper) throws IOException {
         Resource resource = storageService.loadAsResource(newScientificPaper.fileName);
         newScientificPaper.text = documentParserService.extractTextFromDocument(resource.getInputStream());
         newScientificPaper.numberOfImages = documentParserService.extractImageNamesFromDocument(resource.getInputStream()).size();
         
-        String documentId = scientificPaperIndexer.index(newScientificPaper);
+        PublishPaperResponse publishPaperResponse = new PublishPaperResponse();
         
-        logger.info(String.format("Document [id = %s] is successfully added to an index.", documentId));
+        publishPaperResponse.documentId = scientificPaperIndexer.index(newScientificPaper);
+        
+        logger.info(String.format("Document [id = %s] is successfully added to an index.", publishPaperResponse.documentId));
         
         return ResponseEntity
         		.ok()
-        		.body(documentId);
+        		.body(publishPaperResponse);
     }
     
     @ExceptionHandler(StorageFileNotFoundException.class)

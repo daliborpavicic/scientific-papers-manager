@@ -68,7 +68,7 @@ public class SearchQueryBuilder {
 		QueryStringQueryBuilder queryStringQuery = queryStringQuery(query);
 		queryStringQuery.defaultOperator(Operator.AND);
 		
-		for (String fieldName : ScientificPaperFieldName.queryFieldNames) {
+		for (String fieldName : ScientificPaperFieldName.simpleSearchFieldNames) {
 			queryStringQuery.field(fieldName);
 		}
 		

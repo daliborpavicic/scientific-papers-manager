@@ -18,7 +18,7 @@ import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
-import rs.ac.uns.ftn.informatika.dto.AdvancedSearchData;
+import rs.ac.uns.ftn.informatika.dto.AdvancedSearchParams;
 import rs.ac.uns.ftn.informatika.model.FieldQueryParams;
 import rs.ac.uns.ftn.informatika.model.ScientificPaper;
 import rs.ac.uns.ftn.informatika.model.ScientificPaperFieldName;
@@ -52,16 +52,16 @@ public class ScientificPaperSearcherImpl implements ScientificPaperSearcher {
     }
 
 	@Override
-	public List<ScientificPaper> searchAdvanced(AdvancedSearchData advancedSearchData) {
+	public List<ScientificPaper> searchAdvanced(AdvancedSearchParams advancedSearchData) {
     	HashMap<String, FieldQueryParams> queryParamsForFields = new HashMap<String, FieldQueryParams>();
     	
-    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.TITLE.getFieldName(), advancedSearchData.titleParams);
-    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.ABSTRACT.getFieldName(), advancedSearchData.anAbstractParams);
-    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.KEYWORDS.getFieldName(), advancedSearchData.keywordsParams);
-    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.TEXT.getFieldName(), advancedSearchData.textParams);
-    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.AUTHOR.getFieldName(), advancedSearchData.authorNameParams);
-    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.CATEGORY.getFieldName(), advancedSearchData.categoryParams);
-    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.PUBLISH_DATE.getFieldName(), advancedSearchData.publishDateParams);
+    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.TITLE.getFieldName(), advancedSearchData.title);
+    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.ABSTRACT.getFieldName(), advancedSearchData.anAbstract);
+    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.KEYWORDS.getFieldName(), advancedSearchData.keywords);
+    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.TEXT.getFieldName(), advancedSearchData.text);
+    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.AUTHOR.getFieldName(), advancedSearchData.authorName);
+    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.CATEGORY.getFieldName(), advancedSearchData.category);
+    	addIfValidParams(queryParamsForFields, ScientificPaperFieldName.PUBLISH_DATE.getFieldName(), advancedSearchData.publishDate);
     	
     	if (queryParamsForFields.isEmpty()) {
     		throw new IllegalArgumentException(String.format("%s \n doesn't have any populated query strings.", advancedSearchData.toString()));

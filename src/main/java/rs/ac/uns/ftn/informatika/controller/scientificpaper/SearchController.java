@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.informatika.dto.AdvancedSearchData;
+import rs.ac.uns.ftn.informatika.dto.AdvancedSearchParams;
 import rs.ac.uns.ftn.informatika.model.ScientificPaper;
 import rs.ac.uns.ftn.informatika.service.ScientificPaperSearcher;
 
@@ -32,7 +32,7 @@ public class SearchController {
 	}
 
 	@RequestMapping(value = "search", method = RequestMethod.POST)
-	public Iterable<ScientificPaper> searchAdvanced(@RequestBody AdvancedSearchData advancedSearchData) {
+	public Iterable<ScientificPaper> searchAdvanced(@RequestBody AdvancedSearchParams advancedSearchData) {
 		Iterable<ScientificPaper> scientificPapers = scientificPaperSearcher.searchAdvanced(advancedSearchData);
 
 		return scientificPapers;

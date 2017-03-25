@@ -7,7 +7,8 @@ public enum ScientificPaperFieldName {
 	CATEGORY("categoryName"),
 	TEXT("text"),
 	PUBLISH_DATE("publishDate"),
-	AUTHOR("authorName");
+	AUTHOR("authorName"),
+	FILE_NAME("fileName");
 	
     public static final String[] queryFieldNames = {
     		TITLE.getFieldName(),

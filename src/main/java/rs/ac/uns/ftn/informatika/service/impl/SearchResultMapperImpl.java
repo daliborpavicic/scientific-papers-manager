@@ -39,6 +39,7 @@ public final class SearchResultMapperImpl implements SearchResultMapper {
 					.publishDate(parseDate(searchHit))
 					.authorName((String) searchHit.getSource().get(ScientificPaperFieldName.AUTHOR.getFieldName()))
 					.highlightedText(getHighlightText(searchHit))
+					.fileName((String) searchHit.getSource().get(ScientificPaperFieldName.FILE_NAME.getFieldName()))
 					.build();
 
 			results.add(scientificPaper);

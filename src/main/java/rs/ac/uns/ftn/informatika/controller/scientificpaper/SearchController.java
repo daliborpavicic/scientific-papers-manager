@@ -37,5 +37,12 @@ public class SearchController {
 
 		return scientificPapers;
 	}
+	
+	@RequestMapping(value = "search/mlt", method = RequestMethod.GET)
+	public Iterable<ScientificPaper> searchMoreLikeThis(@RequestParam(name = "documentId") String documentId) {
+		Iterable<ScientificPaper> scientificPapers = scientificPaperSearcher.searchMoreLikeThis(documentId);
+
+		return scientificPapers;
+	}
 
 }

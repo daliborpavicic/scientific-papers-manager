@@ -56,7 +56,7 @@ Object.keys(paperFields).forEach((fieldKey) => {
 
   advancedSearch[getQueryStringFieldName(paperFieldName)] = {};
   advancedSearch[getQueryTypeFieldName(paperFieldName)] = { initialValue: 'DEFAULT' };
-  advancedSearch[getBoolOccurrenceFieldName(paperFieldName)] = {};
+  advancedSearch[getBoolOccurrenceFieldName(paperFieldName)] = { initialValue: 'MUST' };
 });
 
 Object.assign(advancedSearch, {

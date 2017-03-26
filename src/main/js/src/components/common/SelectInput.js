@@ -27,12 +27,17 @@ const SelectInput = ({
   );
 };
 
+const optionShape = {
+  value: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired
+};
+
 SelectInput.propTypes = {
   source: PropTypes.object,
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired
-  })).isRequired
+  options: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.shape(optionShape)),
+    PropTypes.object // observable array is object like array
+  ]).isRequired
 };
 
 export default observer(SelectInput);

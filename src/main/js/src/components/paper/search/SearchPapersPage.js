@@ -1,15 +1,17 @@
 import React, { PropTypes } from 'react';
 import { observer } from 'mobx-react';
-import Protected from '../../security/Protected';
+import SimpleSearchForm from './SimpleSearchForm';
+import AdvancedSearchForm from './AdvancedSearchForm';
 
 const SearchPapersPage = () => {
-  console.log('render search...');
-
   return (
-    <div>SearchPapersPage</div>
+    <div>
+      <SimpleSearchForm />
+      <AdvancedSearchForm />
+    </div>
   );
 };
 
 SearchPapersPage.propTypes = {};
 
-export default Protected(observer(SearchPapersPage));
+export default (observer(SearchPapersPage));

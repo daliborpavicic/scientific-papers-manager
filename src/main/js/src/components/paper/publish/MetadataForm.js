@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 import { observer, inject } from 'mobx-react';
-import Form from '../../../common/Form';
-import TextInput from '../../../common/TextInput';
-import TextArea from '../../../common/TextArea';
-import SelectInput from '../../../common/SelectInput';
-import Button, { buttonTypes } from '../../../common/Button';
+import Form from '../../common/Form';
+import TextInput from '../../common/TextInput';
+import TextArea from '../../common/TextArea';
+import SelectInput from '../../common/SelectInput';
+import Button, { buttonTypes } from '../../common/Button';
 
-const MetadataForm = ({ publishPaperStore }) => {
+const MetadataForm = ({ publishPaperStore, selectOptionsStore }) => {
+  const paperCategoryOptions = selectOptionsStore.getPaperCategoryOptions();
   const { paperMetadataForm, onClickPublish } = publishPaperStore;
   const {
     title,
@@ -23,10 +24,7 @@ const MetadataForm = ({ publishPaperStore }) => {
       <TextInput source={keywords} />
       <SelectInput
         source={categoryName}
-        options={[
-          { value: 'Cat1', text: 'Category 1' },
-          { value: 'Cat2', text: 'Category 2' },
-        ]}
+        options={paperCategoryOptions}
       />
       <TextArea source={text} />
       <Button
@@ -39,7 +37,8 @@ const MetadataForm = ({ publishPaperStore }) => {
 };
 
 MetadataForm.propTypes = {
-  publishPaperStore: PropTypes.object.isRequired
+  publishPaperStore: PropTypes.object.isRequired,
+  selectOptionsStore: PropTypes.object.isRequired
 };
 
-export default inject('publishPaperStore')(observer(MetadataForm));
+export default inject('publishPaperStore', 'selectOptionsStore')(observer(MetadataForm));

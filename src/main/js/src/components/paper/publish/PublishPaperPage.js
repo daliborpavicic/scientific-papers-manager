@@ -1,9 +1,12 @@
 import React, { PropTypes } from 'react';
 import { observer } from 'mobx-react';
+import PublishForm from './PublishForm';
 
 const PublishPaperPage = () => {
   return (
-    <div>PublishPaperPage</div>
+    <div>
+      <PublishForm />
+    </div>
   );
 };
 

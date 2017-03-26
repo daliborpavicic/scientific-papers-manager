@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { observer, inject } from 'mobx-react';
-import Form from '../../../common/Form';
-import FileInput from '../../../common/FileInput';
-import Button, { buttonTypes } from '../../../common/Button';
+import Form from '../../common/Form';
+import FileInput from '../../common/FileInput';
+import Button, { buttonTypes } from '../../common/Button';
 
 const UploadPaperForm = ({ publishPaperStore }) => {
   const { uploadPaperForm, onClickUpload } = publishPaperStore;

@@ -35,6 +35,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-configuration-processor')
 	compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
+	compile('org.springframework.boot:spring-boot-starter-security')
 	
 	// Database
 	compile('com.h2database:h2')
@@ -42,6 +43,9 @@ dependencies {
 	// PDF utilities
 	compile("org.apache.pdfbox:pdfbox:2.0.0")
 	compile("org.apache.pdfbox:xmpbox:2.0.0")
+	
+	// JWT
+	compile("io.jsonwebtoken:jjwt:0.7.0")
 
 	// Tests
 	testCompile('org.springframework.boot:spring-boot-starter-test')

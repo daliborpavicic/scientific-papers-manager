@@ -14,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import rs.ac.uns.ftn.informatika.configuration.ElasticsearchConfiguration;
 import rs.ac.uns.ftn.informatika.configuration.StorageProperties;
+import rs.ac.uns.ftn.informatika.model.security.Account;
+import rs.ac.uns.ftn.informatika.repository.AccountRepository;
 import rs.ac.uns.ftn.informatika.service.CategoryService;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 
@@ -41,13 +43,23 @@ public class Application {
     }
 
 	@Bean
-	CommandLineRunner init(StorageService storageService, CategoryService categoryService) {
+	CommandLineRunner init(
+			StorageService storageService, 
+			CategoryService categoryService, 
+			AccountRepository accountRepository) {
+		
 		return (args) -> {
 			storageService.deleteAll();
 			categoryService.deleteAll();
 			
             storageService.init();
             categoryService.init();
+            
+            Account account = new Account();
+            account.setUsername("admin");
+            account.setPassword("$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi");
+            
+            accountRepository.saveAndFlush(account);
             
 			logger.info("scientific-papers-manager is up and running...");
 		};

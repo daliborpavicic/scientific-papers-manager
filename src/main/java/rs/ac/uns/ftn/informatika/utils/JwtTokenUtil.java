@@ -15,6 +15,7 @@ public class JwtTokenUtil {
 
 	public static final String CLAIM_KEY_USERNAME = "sub";
 	public static final String CLAIM_KEY_CREATED = "created";
+	public static final String CLAIM_KEY_AUTHORITIES = "authorities";
 	
 	public static final String JWT_SECRET = "secret";
 	private static final int EXPIRATION_TIME_IN_SECONDS = 36000;
@@ -73,6 +74,7 @@ public class JwtTokenUtil {
 		
 		claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
 		claims.put(CLAIM_KEY_CREATED, generateExpirationDate(new Date()));
+		claims.put(CLAIM_KEY_AUTHORITIES, userDetails.getAuthorities());
 		
 		return generateToken(claims);
 	}

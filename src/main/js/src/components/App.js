@@ -27,20 +27,38 @@ const App = () => {
   return (
     <Router>
       <Provider {...stores}>
-        <div>
-          <h1>Scientific papers manager</h1>
-          <ul>
-            <li><Link to='/'>Home</Link></li>
-            <li><Link to='/search'>Search</Link></li>
-            <li><Link to='/publish'>Publish</Link></li>
-            <li><Link to='/protected'>Protected</Link></li>
-          </ul>
-          <Route exact path={'/'} render={() => <p>Root - /</p>} />
-          <Route exact path={'/login'} component={LoginPage} />
-          <Route exact path={'/publish'} component={PublishPaperPage} />
-          <Route exact path={'/search'} component={SearchPapersPage} />
-          <Route exact path={'/protected'} component={Protected(() => <div>Protected route</div>)} />
-        </div>
+        <section className='hero'>
+          <div className='hero-head'>
+            <header className='nav'>
+              <div className='container is-primary'>
+                <div className='nav-left'>
+                  <div className='nav-item'>
+                    <em>Scientific papers manager</em>
+                  </div>
+                </div>
+                <div className='nav-right'>
+                  <span className='nav-item'><Link to='/'>Home</Link></span>
+                  <span className='nav-item'><Link to='/search'>Search</Link></span>
+                  <span className='nav-item'><Link to='/publish'>Publish</Link></span>
+                  <span className='nav-item'><Link to='/protected'>Protected</Link></span>
+                </div>
+              </div>
+            </header>
+          </div>
+          <div className='hero-body'>
+            <div className='container'>
+              <div className='columns'>
+                <div className='column is-half is-offset-one-quarter'>
+                  <Route exact path={'/'} render={() => <p>Root - /</p>} />
+                  <Route exact path={'/login'} component={LoginPage} />
+                  <Route exact path={'/publish'} component={PublishPaperPage} />
+                  <Route exact path={'/search'} component={SearchPapersPage} />
+                  <Route exact path={'/protected'} component={Protected(() => <div>Protected route</div>)} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </Provider>
     </Router>
   );

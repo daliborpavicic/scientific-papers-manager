@@ -23,9 +23,9 @@ import rs.ac.uns.ftn.informatika.utils.JwtTokenUtil;
 @RequestMapping(BASE_API_URL + "/authentication")
 public class AuthenticationController {
 	
-	UserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;
 	
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	public AuthenticationController(UserDetailsService userDetailsService,

@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.controller.scientificpaper;
 import static rs.ac.uns.ftn.informatika.controller.HomeController.BASE_API_URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ public class SearchController {
 	}
 
 	@RequestMapping(value = "search", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('USER')")
 	public Iterable<ScientificPaper> searchSimple(@RequestParam(name = "q") String query) {
 		Iterable<ScientificPaper> scientificPapers = scientificPaperSearcher.searchSimple(query);
 
@@ -39,6 +41,7 @@ public class SearchController {
 	}
 	
 	@RequestMapping(value = "search/mlt", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ADMIN')")
 	public Iterable<ScientificPaper> searchMoreLikeThis(@RequestParam(name = "documentId") String documentId) {
 		Iterable<ScientificPaper> scientificPapers = scientificPaperSearcher.searchMoreLikeThis(documentId);
 

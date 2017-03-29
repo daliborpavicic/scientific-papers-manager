@@ -23,8 +23,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
 
-	private static final String TOKEN_HEADER = "Authorization";
-	
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
@@ -34,12 +32,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 		
 		logger.info("In authentication filter...");
 		
-		String tokenHeader = request.getHeader(TOKEN_HEADER);
-		String token = "";
-		
-		if (tokenHeader != null && tokenHeader.startsWith("Bearer")) {
-			token = tokenHeader.substring(7);
-		}
+		String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
+		String token = JwtTokenUtil.getTokenFromHttpHeader(tokenHeader);
 		
 		String usernameFromToken = JwtTokenUtil.getUsernameFromToken(token);
 		

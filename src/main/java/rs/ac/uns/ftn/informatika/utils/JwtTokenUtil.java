@@ -87,4 +87,16 @@ public class JwtTokenUtil {
 		return usernameFromToken.equals(jwtUser.getUsername());
 	}
 
+	public static final String TOKEN_HEADER = "Authorization";
+
+
+	public static String getTokenFromHttpHeader(String tokenHeader) {
+		String token = "";
+		
+		if (tokenHeader != null && tokenHeader.startsWith("Bearer")) {
+			token = tokenHeader.substring(7);
+		}
+		return token;
+	}
+
 }

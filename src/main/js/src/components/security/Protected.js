@@ -2,16 +2,15 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 
-// TODO: Add support for permissions
-const Protected = (Component) => {
+const Protected = (Component, authorities = []) => {
   return inject('authStore')(observer((props) => {
     const authStore = props.authStore;
 
-    const isAuthenticated = authStore.isAuthenticated();
+    const shouldRenderComponent = authorities.every(authority => authStore.hasAuthority(authority));
     const isAuthenticating = authStore.isAuthenticating();
-    const shouldRedirect = !isAuthenticated && !isAuthenticating;
+    const shouldRedirect = !shouldRenderComponent && !isAuthenticating;
 
-    if (isAuthenticated) {
+    if (shouldRenderComponent) {
       return (
         <Component {...props} />
       );

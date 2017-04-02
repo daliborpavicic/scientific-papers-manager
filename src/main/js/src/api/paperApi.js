@@ -2,10 +2,13 @@ import {
   get,
   postJson,
   postFormData,
+  downloadFile,
 } from './httpCalls';
 import getBaseUrl from './getBaseUrl';
 
 const baseUrl = getBaseUrl();
+
+export const getDownloadLink = fileName => `${baseUrl}/paper/${fileName}`;
 
 export function uploadPaper(paperFile) {
   const formData = new FormData();
@@ -32,5 +35,9 @@ export function searchAdvanced(searchParams) {
 
 export function searchMoreLikeThis(paperId) {
   return get(`${baseUrl}/paper/search?paperId=${paperId}`);
+}
+
+export function downloadPaper(fileName) {
+  return downloadFile(`${baseUrl}/paper/${fileName}`);
 }
 

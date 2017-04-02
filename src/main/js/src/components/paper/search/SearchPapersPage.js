@@ -1,17 +1,36 @@
 import React, { PropTypes } from 'react';
-import { observer } from 'mobx-react';
+import { expr } from 'mobx';
+import { observer, inject } from 'mobx-react';
 import SimpleSearchForm from './SimpleSearchForm';
 import AdvancedSearchForm from './AdvancedSearchForm';
+import PaperSearchResults from './PaperSearchResults';
+import Button, { buttonTypes } from '../../common/Button';
+import Protected from '../../security/Protected';
+import { authorities } from '../../../state/auth/authStore';
 
-const SearchPapersPage = () => {
+const SearchPapersPage = ({ searchPapersStore }) => {
+  const isAdvancedSearch = expr(() => searchPapersStore.isAdvancedSearch());
+
+  const switchSearchText = isAdvancedSearch ? 'Simple' : 'Advanced';
+
   return (
     <div>
-      <SimpleSearchForm />
-      <AdvancedSearchForm />
+      {isAdvancedSearch
+        ? <AdvancedSearchForm />
+        : <SimpleSearchForm />
+      }
+      <Button
+        text={switchSearchText}
+        type={buttonTypes.link}
+        onClick={searchPapersStore.domHandlers.onClickSwitchSearch}
+      />
+      <PaperSearchResults />
     </div>
   );
 };
 
-SearchPapersPage.propTypes = {};
+SearchPapersPage.propTypes = {
+  searchPapersStore: PropTypes.object
+};
 
-export default (observer(SearchPapersPage));
+export default Protected(inject('searchPapersStore')(observer(SearchPapersPage)), [authorities.ROLE_ADMIN]);

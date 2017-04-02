@@ -3,6 +3,8 @@ import formFactory from '../common/factories/formFactory';
 import {
   searchSimple,
   searchAdvanced,
+  searchMoreLikeThis,
+  downloadPaper
 } from '../../api/paperApi';
 import {
   getQueryStringFieldName,
@@ -18,7 +20,8 @@ const advancedSearchForm = formFactory(advancedSearch);
 
 const searchPapersStore = (() => {
   const state = observable({
-    searchResults: []
+    isAdvancedSearch: false,
+    searchResults: [],
   });
 
   const getQueryParamFormFields = (paperFieldName) => {
@@ -66,21 +69,27 @@ const searchPapersStore = (() => {
 
   return {
     domHandlers: {
-      onSearchSimple: (e) => {
+      onSearchSimple: action((e) => {
         const query = simpleSearchForm.getFieldValue('query');
         searchSimple(query).then((results) => {
-          console.log('results: ', results);
+          state.searchResults = results;
         });
-      },
-      onSearchAdvanced: (e) => {
+      }),
+      onSearchAdvanced: action((e) => {
         const advancedSearchParams = createAdvancedSearchRequestData();
         searchAdvanced(advancedSearchParams).then((results) => {
-          console.log('results: ', results);
+          state.searchResults = results;
         });
-      }
+      }),
+      onClickSwitchSearch: action(() => {
+        state.isAdvancedSearch = !state.isAdvancedSearch;
+      }),
     },
     simpleSearchForm,
     advancedSearchForm,
+    isAdvancedSearch: () => state.isAdvancedSearch,
+    downloadPaper: (fileName) => downloadPaper(fileName),
+    searchMoreLikeThis: (paperId) => searchMoreLikeThis(paperId),
     getQueryParamFormFields,
     getSearchResults: () => state.searchResults
   };

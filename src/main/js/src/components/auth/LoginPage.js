@@ -4,11 +4,11 @@ import { Redirect } from 'react-router-dom';
 import LoginForm from './LoginForm';
 
 const LoginPage = ({ authStore }) => {
-  const shouldRedirect = authStore.isAuthenticated() && !authStore.isAuthenticating();
-
   if (authStore.isAuthenticating()) {
     return <p>Logging In...</p>;
   }
+
+  const shouldRedirect = authStore.isAuthenticated() && !authStore.isAuthenticating();
 
   return shouldRedirect ? <Redirect to='/' /> : <LoginForm />;
 };

@@ -1,46 +1,90 @@
 import { observable, action } from 'mobx';
+import jwtDecode from 'jwt-decode';
 import formFactory from '../common/factories/formFactory';
 import { isRequired } from '../common/validation/supportedValidators';
+import { authenticate, getUserDetails } from '../../api/authApi';
 
 const loginForm = formFactory({
   username: { label: 'Username', validators: [isRequired] },
   password: { label: 'Password', validators: [isRequired] }
 });
 
-const authStore = (() => {
+export const authorities = {
+  ROLE_ADMIN: 'ROLE_ADMIN',
+  ROLE_USER: 'ROLE_USER'
+};
+
+const authStore = (storageService) => {
+  const getUserFromToken = (token) => {
+    const decodedToken = jwtDecode(token);
+
+    return {
+      name: decodedToken.sub,
+      expirationDate: decodedToken.exp,
+      authorities: decodedToken.authorities.map(authorityObj => authorityObj.authority),
+    };
+  };
+
   const state = observable({
-    isAuthenticated: false,
-    isAuthenticating: false
+    isAuthenticating: false,
+    currentUser: storageService.hasJwtToken()
+      ? getUserFromToken(storageService.getJwtToken())
+      : null,
+    get isAuthenticated() {
+      return state.currentUser !== null;
+    },
+    get canSearchPapers() {
+      return state.isAuthenticated
+        && state.currentUser.authorities.indexOf(authorities.ROLE_ADMIN) !== -1;
+    },
+    get canPublishPapers() {
+      return state.isAuthenticated
+        && state.currentUser.authorities.indexOf(authorities.ROLE_USER) !== -1;
+    },
   });
 
-  const onClickLogin = () => {
-    authStore.authenticate({
-      username: loginForm.getFieldValue('username'),
-      password: loginForm.getFieldValue('password')
-    })
-    .then((result) => {
-      console.log('Authentication result: ', result);
-    });
-  };
-
-  return {
-    authenticate: action((credentials = {}) => {
-      return new Promise((resolve, reject) => {
-        state.isAuthenticating = true;
-
-        setTimeout(() => {
-          state.isAuthenticated = true;
-          state.isAuthenticating = false;
-          resolve(state.isAuthenticated);
-        }, 1000);
+  const publicAPI = {
+    onClickLogin: action(() => {
+      publicAPI.authenticate({
+        username: loginForm.getFieldValue('username'),
+        password: loginForm.getFieldValue('password')
       });
     }),
+    onClickLogout: action(() => {
+      publicAPI.logout();
+    }),
+    authenticate: action((credentials) => {
+      state.isAuthenticating = true;
 
+      authenticate(credentials).then((authenticationResult) => {
+        const token = authenticationResult.token;
+
+        state.currentUser = getUserFromToken(token);
+        storageService.setJwtToken(token);
+        state.isAuthenticating = false;
+      });
+    }),
+    logout: action(() => {
+      storageService.removeJwtToken();
+      loginForm.reset();
+      state.currentUser = null;
+    }),
+    getUserDetails: action(() => {
+      getUserDetails().then((user) => {
+        console.log('user is: ', user);
+      });
+    }),
     loginForm,
-    onClickLogin,
+    isAuthenticating: () => state.isAuthenticating,
     isAuthenticated: () => state.isAuthenticated,
-    isAuthenticating: () => state.isAuthenticating
+    canSearchPapers: () => state.canSearchPapers,
+    canPublishPapers: () => state.canPublishPapers,
+    hasAuthority: (authorityName) => { // TODO: Does this need to be computed ?
+      return state.isAuthenticated && state.currentUser.authorities.indexOf(authorityName) !== -1;
+    },
   };
-})();
+
+  return publicAPI;
+};
 
 export default authStore;

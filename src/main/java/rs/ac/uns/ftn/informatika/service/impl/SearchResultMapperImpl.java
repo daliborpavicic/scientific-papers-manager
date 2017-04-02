@@ -36,10 +36,12 @@ public final class SearchResultMapperImpl implements SearchResultMapper {
 					.title((String) searchHit.getSource().get(ScientificPaperFieldName.TITLE.getFieldName()))
 					.anAbstract((String) searchHit.getSource().get(ScientificPaperFieldName.ABSTRACT.getFieldName()))
 					.keywords((String) searchHit.getSource().get(ScientificPaperFieldName.KEYWORDS.getFieldName()))
+					.categoryName((String) searchHit.getSource().get(ScientificPaperFieldName.CATEGORY.getFieldName()))
 					.publishDate(parseDate(searchHit))
 					.authorName((String) searchHit.getSource().get(ScientificPaperFieldName.AUTHOR.getFieldName()))
-					.highlightedText(getHighlightText(searchHit))
 					.fileName((String) searchHit.getSource().get(ScientificPaperFieldName.FILE_NAME.getFieldName()))
+					.numberOfImages((Integer) searchHit.getSource().get(ScientificPaperFieldName.NUMBER_OF_IMAGES.getFieldName()))
+					.highlightedText(getHighlightText(searchHit))
 					.build();
 
 			results.add(scientificPaper);

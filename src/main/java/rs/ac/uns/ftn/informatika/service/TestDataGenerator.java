@@ -18,5 +18,6 @@ public interface TestDataGenerator {
 	};
 	
 	List<ScientificPaper> generateTestPapersWithText(String text, int numberOfPapers);
-
+	
+	void initDatabase();
 }

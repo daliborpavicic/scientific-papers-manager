@@ -52,7 +52,7 @@ public class ScientificPaperIndexerImpl implements ScientificPaperIndexer {
 			.categoryName(paperCategory != null ? paperCategory.getName() : "default_category") // TODO: Use validation to prevent null value
 			.text(newScientificPaper.text)
 			.publishDate(new Date())
-			.authorName("default_author") // TODO: Set author name to the name of currently logged user after security is implemented
+			.authorName(newScientificPaper.authorName)
 			.numberOfImages(newScientificPaper.numberOfImages)
 			.fileName(newScientificPaper.fileName)
 			.build();

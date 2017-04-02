@@ -8,7 +8,8 @@ public enum ScientificPaperFieldName {
 	TEXT("text"),
 	PUBLISH_DATE("publishDate"),
 	AUTHOR("authorName"),
-	FILE_NAME("fileName");
+	FILE_NAME("fileName"),
+	NUMBER_OF_IMAGES("numberOfImages");
 	
     public static final String[] queryFieldNames = {
     		TITLE.getFieldName(),
@@ -17,7 +18,8 @@ public enum ScientificPaperFieldName {
     		CATEGORY.getFieldName(),
     		TEXT.getFieldName(),
     		PUBLISH_DATE.getFieldName(),
-    		AUTHOR.getFieldName()
+    		AUTHOR.getFieldName(),
+    		NUMBER_OF_IMAGES.getFieldName()
     };
     
     public static final String[] simpleSearchFieldNames = {

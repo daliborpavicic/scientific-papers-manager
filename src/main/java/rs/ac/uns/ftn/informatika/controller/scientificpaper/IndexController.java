@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.ac.uns.ftn.informatika.dto.NewScientificPaper;
 import rs.ac.uns.ftn.informatika.dto.PublishPaperResponse;
 import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
+import rs.ac.uns.ftn.informatika.model.security.JwtUser;
 import rs.ac.uns.ftn.informatika.service.DocumentParserService;
 import rs.ac.uns.ftn.informatika.service.ScientificPaperIndexer;
 import rs.ac.uns.ftn.informatika.service.StorageService;
@@ -42,10 +45,15 @@ public class IndexController {
     }
 
     @RequestMapping(value="publish", method = RequestMethod.POST)
-    public ResponseEntity<PublishPaperResponse> publishScientificPaper(@RequestBody NewScientificPaper newScientificPaper) throws IOException {
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<PublishPaperResponse> publishScientificPaper(
+    		@RequestBody NewScientificPaper newScientificPaper, Authentication authentication) throws IOException {
         Resource resource = storageService.loadAsResource(newScientificPaper.fileName);
         newScientificPaper.text = documentParserService.extractTextFromDocument(resource.getInputStream());
         newScientificPaper.numberOfImages = documentParserService.extractImageNamesFromDocument(resource.getInputStream()).size();
+        
+        JwtUser currentUser = (JwtUser) authentication.getPrincipal();
+        newScientificPaper.authorName = currentUser.getUsername();
         
         PublishPaperResponse publishPaperResponse = new PublishPaperResponse();
         

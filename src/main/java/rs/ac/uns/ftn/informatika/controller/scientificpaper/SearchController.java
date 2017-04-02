@@ -26,7 +26,7 @@ public class SearchController {
 	}
 
 	@RequestMapping(value = "search", method = RequestMethod.GET)
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Iterable<ScientificPaper> searchSimple(@RequestParam(name = "q") String query) {
 		Iterable<ScientificPaper> scientificPapers = scientificPaperSearcher.searchSimple(query);
 
@@ -34,6 +34,7 @@ public class SearchController {
 	}
 
 	@RequestMapping(value = "search", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ADMIN')")
 	public Iterable<ScientificPaper> searchAdvanced(@RequestBody AdvancedSearchParams advancedSearchData) {
 		Iterable<ScientificPaper> scientificPapers = scientificPaperSearcher.searchAdvanced(advancedSearchData);
 

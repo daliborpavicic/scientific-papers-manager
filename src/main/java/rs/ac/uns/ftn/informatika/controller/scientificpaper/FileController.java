@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,7 @@ public class FileController {
 
 	@ResponseBody
 	@RequestMapping(value="upload", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<String>> listUploadedFiles() throws IOException {
 	
 	    List<String> uploadedFiles = storageService
@@ -57,6 +59,7 @@ public class FileController {
 
 	@ResponseBody
 	@RequestMapping(value = "/{filename:.+}", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 	
 	    Resource file = storageService.loadAsResource(filename);
@@ -68,6 +71,7 @@ public class FileController {
 
 	@ResponseBody
 	@RequestMapping(value="upload", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<ParsedScientificPaper> handlePaperPdfUpload(@RequestParam("paperFile") MultipartFile paperFile)
 	        throws IOException, XmpParsingException {
 	    ParsedScientificPaper parsedScientificPaper = documentParserService.extractMetadataFromDocument(paperFile.getInputStream());

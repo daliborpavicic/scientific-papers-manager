@@ -13,6 +13,7 @@ import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 import rs.ac.uns.ftn.informatika.exception.StorageException;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -23,7 +24,9 @@ import java.util.stream.Stream;
 @Service
 public class FileSystemStorageService implements StorageService {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileSystemStorageService.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileSystemStorageService.class);
+
+	private static final String PDF_SUFFIX = ".pdf";
     
     private final Path rootLocation;
 
@@ -34,22 +37,43 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public String store(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
+        String originalFileName = file.getOriginalFilename();
 
         try {
             if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + fileName);
+                throw new StorageException("Failed to store empty file " + originalFileName);
             }
-            // TODO: Make sure that file name doesn't exist in the directory already
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(fileName));
             
-            logger.info(String.format("Successfully saved '%s' to '%s'", fileName, rootLocation));
+            String savedFileName = getUniqueFileName(originalFileName);
+
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(savedFileName));
             
-            return fileName;
+            logger.info(String.format("Successfully saved '%s' to '%s'", savedFileName, rootLocation));
+            
+            return savedFileName;
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + fileName, e);
+            throw new StorageException("Failed to store file " + originalFileName, e);
         }
     }
+
+	private String removeSuffixFromFileName(String originalFileName) {
+		if (originalFileName.endsWith(PDF_SUFFIX)) {
+			String strippedSuffixFileName = originalFileName.substring(0, originalFileName.lastIndexOf(PDF_SUFFIX));
+			
+			return strippedSuffixFileName;
+		}
+		
+		return originalFileName;
+	}
+	
+	private String getUniqueFileName(String originalFileName) throws IOException {
+		String fileNamePrefix = String.format("%s_", removeSuffixFromFileName(originalFileName));
+        File tempFile = File.createTempFile(fileNamePrefix, PDF_SUFFIX);
+        String fileName = tempFile.getName();
+        tempFile.delete();
+        
+        return fileName;
+	}
 
     @Override
     public Stream<Path> loadAll() {

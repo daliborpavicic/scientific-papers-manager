@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import io.jsonwebtoken.Claims;
@@ -12,11 +14,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import rs.ac.uns.ftn.informatika.model.security.JwtUser;
 
 public class JwtTokenUtil {
+	
+	private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
 	public static final String CLAIM_KEY_USERNAME = "sub";
 	public static final String CLAIM_KEY_CREATED = "created";
 	public static final String CLAIM_KEY_AUTHORITIES = "authorities";
 	
+	public static final String TOKEN_HEADER = "Authorization";
+
 	public static final String JWT_SECRET = "secret";
 	private static final int EXPIRATION_TIME_IN_SECONDS = 36000;
 
@@ -42,7 +48,7 @@ public class JwtTokenUtil {
 					.parseClaimsJws(token)
 					.getBody();
 		} catch (Exception e) {
-			// TODO: log exception
+			logger.info(String.format("Token parsing exception: %s", e.getMessage()));
 			claims = null;
 		}
 		
@@ -56,7 +62,7 @@ public class JwtTokenUtil {
 			Claims claimsFromToken = getClaimsFromToken(token);
 			username = claimsFromToken.getSubject();
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.info(String.format("Token parsing exception: %s", e.getMessage()));
 			username = null;
 		}
 		
@@ -87,7 +93,6 @@ public class JwtTokenUtil {
 		return usernameFromToken.equals(jwtUser.getUsername());
 	}
 
-	public static final String TOKEN_HEADER = "Authorization";
 
 
 	public static String getTokenFromHttpHeader(String tokenHeader) {

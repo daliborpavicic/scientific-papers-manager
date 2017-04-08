@@ -42,8 +42,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 		boolean shouldAuthenticate = usernameFromToken != null && SecurityContextHolder.getContext().getAuthentication() == null;
 		
 		if (shouldAuthenticate) {
-			
-			// TODO: Instead of loading user details from DB, the information can be stored in and read from token
+			// Instead of loading user details from DB, the information can be stored in and read from token
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(usernameFromToken);
 			
 			if (JwtTokenUtil.isValidToken(token, userDetails)) {

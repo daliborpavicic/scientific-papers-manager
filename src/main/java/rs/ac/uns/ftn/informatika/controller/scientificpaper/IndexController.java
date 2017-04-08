@@ -22,6 +22,7 @@ import rs.ac.uns.ftn.informatika.dto.PublishPaperResponse;
 import rs.ac.uns.ftn.informatika.exception.StorageFileNotFoundException;
 import rs.ac.uns.ftn.informatika.model.security.JwtUser;
 import rs.ac.uns.ftn.informatika.service.DocumentParserService;
+import rs.ac.uns.ftn.informatika.service.EmailService;
 import rs.ac.uns.ftn.informatika.service.ScientificPaperIndexer;
 import rs.ac.uns.ftn.informatika.service.StorageService;
 
@@ -36,12 +37,16 @@ public class IndexController {
     private final DocumentParserService documentParserService;
 
     private final ScientificPaperIndexer scientificPaperIndexer;
+    
+    private final EmailService emailService;
 
     @Autowired
-    public IndexController(StorageService storageService, DocumentParserService documentParserService, ScientificPaperIndexer scientificPaperService) {
+    public IndexController(StorageService storageService, DocumentParserService documentParserService, 
+    		ScientificPaperIndexer scientificPaperService, EmailService emailService) {
         this.storageService = storageService;
         this.documentParserService = documentParserService;
         this.scientificPaperIndexer = scientificPaperService;
+        this.emailService = emailService;
     }
 
     @RequestMapping(value="publish", method = RequestMethod.POST)
@@ -60,6 +65,12 @@ public class IndexController {
         publishPaperResponse.documentId = scientificPaperIndexer.index(newScientificPaper);
         
         logger.info(String.format("Document [id = %s] is successfully added to an index.", publishPaperResponse.documentId));
+        
+        try {
+			emailService.sendScientificPaperContent(newScientificPaper, currentUser.getEmail());
+		} catch (Exception e) {
+			logger.info("Error sending an email: " + e.getMessage());
+		}
         
         return ResponseEntity
         		.ok()

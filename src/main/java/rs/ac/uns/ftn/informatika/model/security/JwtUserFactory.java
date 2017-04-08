@@ -12,7 +12,6 @@ public final class JwtUserFactory {
     }
 
     public static JwtUser create(Account account) {
-    	// TODO: Extend account properties
         return new JwtUser(
                 account.getId(),
                 account.getUsername(),

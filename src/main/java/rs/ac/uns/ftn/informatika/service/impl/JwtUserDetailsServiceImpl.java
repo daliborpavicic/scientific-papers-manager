@@ -27,7 +27,6 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 		if (account == null) {
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
 		} else {
-			// TODO: Create user details
 			return JwtUserFactory.create(account);
 		}
 	}

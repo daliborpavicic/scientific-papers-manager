@@ -87,14 +87,15 @@ public class TestDataGeneratorImpl implements TestDataGenerator {
         
         accountRepository.deleteAll();
         
-        createAccount("admin", "$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi", AuthorityName.ROLE_ADMIN);
-        createAccount("user", "$2a$04$HpOjsVkMMvk479D1ZGw1BOYmUGGXQJu3/mk.wohMdypVVQM2J0xaS", AuthorityName.ROLE_USER);
+        createAccount("admin", "$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi", AuthorityName.ROLE_ADMIN, "");
+        createAccount("user", "$2a$04$HpOjsVkMMvk479D1ZGw1BOYmUGGXQJu3/mk.wohMdypVVQM2J0xaS", AuthorityName.ROLE_USER, "dalibor-pavicic@hotmail.com");
 	}
 
-	private void createAccount(String username, String password, AuthorityName authorityName) {
+	private void createAccount(String username, String password, AuthorityName authorityName, String email) {
 		Account account = new Account();
 		account.setUsername(username);
 		account.setPassword(password);
+		account.setEmail(email);
 
 		Authority authority = new Authority(authorityName);
         

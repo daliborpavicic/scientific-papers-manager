@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -19,6 +20,7 @@ import rs.ac.uns.ftn.informatika.service.TestDataGenerator;
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
 @EnableAutoConfiguration(exclude = {ElasticsearchConfiguration.class})
+@EnableAsync
 public class Application {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);

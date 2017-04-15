@@ -1,15 +1,21 @@
-import authStore from './auth/authStore';
+import initAuthStore from './auth/authStore';
 import selectOptionsStore from './common/selectOptionsStore';
-import publishPaperStore from './publish/publishPaperStore';
+import initPublishPaperStore from './publish/publishPaperStore';
 import searchPapersStore from './search/searchPapersStore';
 import storageService from '../utils/storageService';
+import initUiStore from './ui/uiStore';
 
 const initStores = () => {
+  const authStore = initAuthStore(storageService);
+  const uiStore = initUiStore();
+  const publishPaperStore = initPublishPaperStore(uiStore);
+
   return {
-    authStore: authStore(storageService),
-    publishPaperStore: publishPaperStore,
-    searchPapersStore: searchPapersStore,
-    selectOptionsStore: selectOptionsStore,
+    authStore,
+    uiStore,
+    publishPaperStore,
+    selectOptionsStore,
+    searchPapersStore
   };
 };
 

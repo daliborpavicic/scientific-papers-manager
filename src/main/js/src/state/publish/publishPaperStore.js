@@ -6,7 +6,7 @@ import { uploadPaper, publishPaper } from '../../api/paperApi';
 const uploadPaperForm = formFactory(uploadPaperFields);
 const paperMetadataForm = formFactory(publishPaperFields);
 
-const publishPaperStore = (() => {
+const publishPaperStore = (uiStore) => {
   const state = observable({
     isUploadFormVisible: true,
     parsedPaper: null,
@@ -29,7 +29,7 @@ const publishPaperStore = (() => {
         }
       }, fieldsToModify);
 
-      // state.isUploadFormVisible = false;
+      state.isUploadFormVisible = false;
     });
   });
 
@@ -37,8 +37,16 @@ const publishPaperStore = (() => {
     const paperMetadata = paperMetadataForm.getAllValues();
     const publishRequestData = Object.assign(state.parsedPaper, paperMetadata);
 
-    publishPaper(publishRequestData).then((json) => {
-      console.log('publish response', json);
+    publishPaper(publishRequestData).then((response) => {
+      if (response.documentId) {
+        uiStore.showNotification({
+          type: uiStore.getNotificationTypes().success,
+          message: 'Paper has been published successfully!'
+        });
+        uploadPaperForm.reset();
+        paperMetadataForm.reset();
+        state.isUploadFormVisible = true;
+      }
     });
   };
 
@@ -49,6 +57,6 @@ const publishPaperStore = (() => {
     onClickPublish,
     isUploadFormVisible: () => state.isUploadFormVisible
   };
-})();
+};
 
 export default publishPaperStore;

@@ -4,14 +4,15 @@ import { observer, inject } from 'mobx-react';
 import UploadForm from './UploadForm';
 import MetadataForm from './MetadataForm';
 
-const PublishForm = ({ publishPaperStore }) => {
-  // TODO: use this to switch forms
+const PublishForm = ({publishPaperStore}) => {
   const isUploadVisible = expr(() => publishPaperStore.isUploadFormVisible());
 
   return (
     <div>
-      <UploadForm />
-      <MetadataForm />
+      {isUploadVisible
+        ? <UploadForm />
+        : <MetadataForm />
+      }
     </div>
   );
 };

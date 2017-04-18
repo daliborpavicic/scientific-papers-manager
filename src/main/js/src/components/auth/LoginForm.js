@@ -6,28 +6,25 @@ import TextInput from '../common/TextInput';
 import PasswordInput from '../common/PasswordInput';
 import Button, { buttonTypes } from '../common/Button';
 
-const LoginForm = ({ authStore }) => {
-  const { loginForm, onClickLogin } = authStore;
-  const { username, password } = loginForm.getFields();
+const LoginForm = ({authStore}) => {
+  const {loginForm, onClickLogin} = authStore;
+  const {username, password} = loginForm.getFields();
 
   return (
-    <Form>
-      <TextInput source={username} />
-      <PasswordInput source={password} />
-      <GroupedControl>
-        <Button
-          text='Login'
-          type={buttonTypes.info}
-          isDisabled={!loginForm.isValid()}
-          onClick={onClickLogin}
-        />
-        <Button
-          text='Reset'
-          type={buttonTypes.link}
-          onClick={() => loginForm.reset()}
-        />
-      </GroupedControl>
-    </Form>
+    <div className='column is-4 is-offset-4'>
+      <Form>
+        <TextInput source={username}/>
+        <PasswordInput source={password}/>
+        <GroupedControl>
+          <Button
+            text='Login'
+            type={buttonTypes.info}
+            isDisabled={!loginForm.isValid()}
+            onClick={onClickLogin}
+          />
+        </GroupedControl>
+      </Form>
+    </div>
   );
 };
 

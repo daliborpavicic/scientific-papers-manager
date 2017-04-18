@@ -14,7 +14,7 @@ const SearchPapersPage = ({ searchPapersStore }) => {
   const switchSearchText = isAdvancedSearch ? 'Simple' : 'Advanced';
 
   return (
-    <div>
+    <div className='column is-three-quarters is-offset-1'>
       {isAdvancedSearch
         ? <AdvancedSearchForm />
         : <SimpleSearchForm />

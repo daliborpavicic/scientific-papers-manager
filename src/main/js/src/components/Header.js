@@ -10,6 +10,7 @@ const Header = ({ authStore }) => {
   const isAuthenticated = expr(() => authStore.isAuthenticated());
   const canSearch = expr(() => authStore.canSearchPapers());
   const canPublish = expr(() => authStore.canPublishPapers());
+  const activeLinkClassName = 'is-active';
 
   return (
     <div className='hero-head'>
@@ -18,11 +19,17 @@ const Header = ({ authStore }) => {
           <div className='nav-left'>
             {renderNavItem(<Link to='/'><em>Scientific papers manager</em></Link>)}
             {renderNavItem(<Link to='/'>Home</Link>)}
-            {canSearch && renderNavItem(<Link to='/search'>Search</Link>)}
-            {canPublish && renderNavItem(<Link to='/publish'>Publish</Link>)}
+            {canSearch && renderNavItem(
+              <Link to='/search'>Search</Link>
+            )}
+            {canPublish && renderNavItem(
+              <Link to='/publish'>Publish</Link>
+            )}
             {isAuthenticated
               ? renderNavItem(<LogoutLink />)
-              : renderNavItem(<Link to='/login'>Log in</Link>)}
+              : renderNavItem(
+                <Link to='/login'>Log in</Link>
+              )}
           </div>
         </div>
       </header>

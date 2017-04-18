@@ -4,7 +4,9 @@ import { observer } from 'mobx-react';
 import InputErrorMessage from '../common/InputErrorMessage';
 
 const TextInput = ({
-  source
+  source,
+  placeholder = '',
+  isExpanded = false,
 }) => {
   const onChange = (e) => {
     source.setValue(e.target.value);
@@ -13,18 +15,18 @@ const TextInput = ({
   const shouldDisplayError = expr(() => source.isTouched() && source.hasErrors());
   // TODO: add enable/disable to all inputs
   const isDisabled = expr(() => !source.isEnabled());
+  const labelText = source.getLabel();
 
   return (
-    <div>
-      <label className='label'>
-        {source.getLabel()}
-      </label>
+    <div className={`${isExpanded ? 'is-expanded' : ''} control`}>
+      {labelText && <label className='label'>{labelText}</label>}
       <p className='control'>
         <input
           className='input'
           type='text'
           readOnly={isDisabled}
           value={source.getValue()}
+          placeholder={placeholder}
           onChange={onChange}
           onBlur={onChange}
         />
@@ -35,7 +37,9 @@ const TextInput = ({
 };
 
 TextInput.propTypes = {
-  source: PropTypes.object
+  source: PropTypes.object,
+  placeholder: PropTypes.string,
+  isExpanded: PropTypes.bool
 };
 
 export default observer(TextInput);

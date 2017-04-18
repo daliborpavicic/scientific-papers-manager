@@ -9,8 +9,9 @@ function formFieldFactory({
   const state = observable({
     name: observable.ref(name),
     initialValue,
-    label,
     value: initialValue,
+    initialLabel: label,
+    label,
     isTouched: false,
     isEnabled: true,
     validators: observable.ref(validators),
@@ -77,6 +78,7 @@ function formFieldFactory({
     reset: action('reset', () => {
       state.value = state.initialValue;
       state.isTouched = false;
+      state.label = state.initialLabel;
     })
     // endregion
   };

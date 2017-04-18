@@ -9,7 +9,7 @@ const PasswordInput = ({
   };
 
   return (
-    <div>
+    <div className='control'>
       <label className='label'>
         {source.getLabel()}
       </label>

@@ -14,7 +14,7 @@ export const authorities = {
   ROLE_USER: 'ROLE_USER'
 };
 
-const authStore = (storageService) => {
+const authStore = (storageService, uiStore) => {
   const getUserFromToken = (token) => {
     const decodedToken = jwtDecode(token);
 
@@ -24,6 +24,8 @@ const authStore = (storageService) => {
       authorities: decodedToken.authorities.map(authorityObj => authorityObj.authority),
     };
   };
+
+  const onError = uiStore.getErrorCallback();
 
   const state = observable({
     isAuthenticating: false,
@@ -62,17 +64,13 @@ const authStore = (storageService) => {
         state.currentUser = getUserFromToken(token);
         storageService.setJwtToken(token);
         state.isAuthenticating = false;
-      });
+        uiStore.fetchPaperCategories();
+      }, onError);
     }),
     logout: action(() => {
       storageService.removeJwtToken();
       loginForm.reset();
       state.currentUser = null;
-    }),
-    getUserDetails: action(() => {
-      getUserDetails().then((user) => {
-        console.log('user is: ', user);
-      });
     }),
     loginForm,
     isAuthenticating: () => state.isAuthenticating,

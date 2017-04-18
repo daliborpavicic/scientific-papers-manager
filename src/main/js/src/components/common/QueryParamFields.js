@@ -9,15 +9,18 @@ const QueryParamFields = ({ searchPapersStore, fieldName, label }) => {
   const queryParamFields = searchPapersStore.getQueryParamFormFields(fieldName);
   return (
     <GroupedControl>
-      <label className='label'>{label}</label>
       <SelectInput
         options={boolOccurOptions}
         source={queryParamFields.boolOccurrenceField}
       />
-      <TextInput source={queryParamFields.queryStringField} />
       <SelectInput
         options={queryTypeOptions}
         source={queryParamFields.queryTypeField}
+      />
+      <TextInput
+        source={queryParamFields.queryStringField}
+        placeholder={label}
+        isExpanded
       />
     </GroupedControl>
   );

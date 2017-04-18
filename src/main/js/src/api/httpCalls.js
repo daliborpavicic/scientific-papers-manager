@@ -2,7 +2,14 @@ import 'whatwg-fetch';
 import download from 'downloadjs';
 import storageService from '../utils/storageService';
 
-const onSuccess = response => response.json();
+const onSuccess = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response.json().then(json => Promise.resolve(json));
+  }
+
+  return response.json().then(json => Promise.reject(json));
+};
+
 const onError = error => console.log(error);
 
 const createAuthorizationHeader = () => {
@@ -57,7 +64,14 @@ export function postFormData(url, formData, withAuthorization = true) {
   return fetch(request).then(onSuccess, onError);
 }
 
-export function downloadFile(url, withAuthorization = true) {
+
+export function downloadFile(config) {
+  const {
+    url,
+    withAuthorization = true,
+    fileName = 'default_file'
+  } = config;
+
   const requestParams = {
     method: 'GET',
     headers: {}
@@ -70,6 +84,12 @@ export function downloadFile(url, withAuthorization = true) {
   const request = new Request(url, requestParams);
 
   return fetch(request)
-    .then((response => response.blob()), onError)
-    .then(blob => download(blob));
+    .then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        return response.blob();
+      }
+
+      return Promise.reject(response.statusText);
+    })
+    .then(blob => download(blob, fileName), onError);
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 const HomePage = () => {
   return (
-    <div>
+    <div className='column'>
       <h1 className='title'>
         Welcome to Scientific papers manager
       </h1>

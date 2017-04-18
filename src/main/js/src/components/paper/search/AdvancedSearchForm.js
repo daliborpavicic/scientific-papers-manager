@@ -8,14 +8,14 @@ import QueryParamFields from '../../common/QueryParamFields';
 import Button, { buttonTypes } from '../../common/Button';
 import { paperFields } from '../../../state/search/config';
 
-const AdvancedSearchForm = ({ searchPapersStore, selectOptionsStore }) => {
+const AdvancedSearchForm = ({ searchPapersStore, uiStore }) => {
   const {
     advancedSearchForm,
     domHandlers: {
       onSearchAdvanced
     }
   } = searchPapersStore;
-  const categoryOptions = selectOptionsStore.getPaperCategoryOptions();
+  const categoryOptions = uiStore.getPaperCategoryOptions();
   const { title, anAbstract, keywords, text, authorName } = paperFields;
   const { category, dateFrom, dateTo } = advancedSearchForm.getFields();
 
@@ -28,8 +28,8 @@ const AdvancedSearchForm = ({ searchPapersStore, selectOptionsStore }) => {
       <QueryParamFields fieldName={authorName.name} label={authorName.label} />
       <SelectInput options={categoryOptions} source={category} />
       <GroupedControl>
-        <TextInput source={dateFrom} />
-        <TextInput source={dateTo} />
+        <TextInput source={dateFrom} placeholder={'yyyy-MM-dd'} isExpanded />
+        <TextInput source={dateTo} placeholder={'yyyy-MM-dd'} isExpanded />
       </GroupedControl>
       <GroupedControl>
         <Button
@@ -50,7 +50,7 @@ const AdvancedSearchForm = ({ searchPapersStore, selectOptionsStore }) => {
 
 AdvancedSearchForm.propTypes = {
   searchPapersStore: PropTypes.object.isRequired,
-  selectOptionsStore: PropTypes.object.isRequired
+  uiStore: PropTypes.object.isRequired
 };
 
-export default inject('searchPapersStore', 'selectOptionsStore')(observer(AdvancedSearchForm));
+export default inject('searchPapersStore', 'uiStore')(observer(AdvancedSearchForm));

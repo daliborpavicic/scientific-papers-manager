@@ -34,10 +34,13 @@ export function searchAdvanced(searchParams) {
 }
 
 export function searchMoreLikeThis(paperId) {
-  return get(`${baseUrl}/paper/search?paperId=${paperId}`);
+  return get(`${baseUrl}/paper/search/mlt?documentId=${paperId}`);
 }
 
 export function downloadPaper(fileName) {
-  return downloadFile(`${baseUrl}/paper/${fileName}`);
+  return downloadFile({
+    url: `${baseUrl}/paper/${fileName}`,
+    fileName
+  });
 }
 

@@ -12,7 +12,7 @@ const TextArea = ({
   const isDisabled = expr(() => !source.isEnabled());
 
   return (
-    <div>
+    <div className='control'>
       <label className='label'>
         {source.getLabel()}
       </label>

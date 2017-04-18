@@ -27,7 +27,7 @@ const FileInput = ({
   };
 
   return (
-    <div>
+    <div className='control'>
       <label className='label' />
       <p className='control' style={{ display: 'inline-flex', alignItems: 'center' }}>
         {/* Only label is visible and used to trigger a click event on file input */}

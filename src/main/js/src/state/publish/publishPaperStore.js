@@ -10,6 +10,7 @@ const publishPaperStore = (uiStore) => {
   const state = observable({
     isUploadFormVisible: true,
     parsedPaper: null,
+    isPublishing: false,
   });
 
   const onClickUpload = action('click upload', () => {
@@ -33,29 +34,35 @@ const publishPaperStore = (uiStore) => {
     });
   });
 
-  const onClickPublish = () => {
-    const paperMetadata = paperMetadataForm.getAllValues();
-    const publishRequestData = Object.assign(state.parsedPaper, paperMetadata);
-
-    publishPaper(publishRequestData).then((response) => {
-      if (response.documentId) {
-        uiStore.showNotification({
-          type: uiStore.getNotificationTypes().success,
-          message: 'Paper has been published successfully!'
-        });
-        uploadPaperForm.reset();
-        paperMetadataForm.reset();
-        state.isUploadFormVisible = true;
-      }
-    });
-  };
-
   return {
     uploadPaperForm,
     paperMetadataForm,
     onClickUpload,
-    onClickPublish,
-    isUploadFormVisible: () => state.isUploadFormVisible
+    onClickPublish: action(() => {
+      const paperMetadata = paperMetadataForm.getAllValues();
+      const publishRequestData = Object.assign(state.parsedPaper, paperMetadata);
+
+      state.isPublishing = true;
+
+      publishPaper(publishRequestData).then((response) => {
+        if (response.documentId) {
+          uiStore.showNotification({
+            type: uiStore.getNotificationTypes().success,
+            message: 'Paper has been published successfully!'
+          });
+          uploadPaperForm.reset();
+          uploadPaperForm.setfi
+          paperMetadataForm.reset();
+          state.isUploadFormVisible = true;
+          state.isPublishing = false;
+        }
+      }, (err) => {
+        state.isPublishing = false;
+        uiStore.getErrorCallback().call(null, err);
+      });
+    }),
+    isUploadFormVisible: () => state.isUploadFormVisible,
+    isPublishing: () => state.isPublishing
   };
 };
 

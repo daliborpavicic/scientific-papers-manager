@@ -6,6 +6,11 @@ import MetadataForm from './MetadataForm';
 
 const PublishForm = ({publishPaperStore}) => {
   const isUploadVisible = expr(() => publishPaperStore.isUploadFormVisible());
+  const isPublishing = expr(() => publishPaperStore.isPublishing());
+
+  if (isPublishing) {
+    return <div>Publish in progress...</div>;
+  }
 
   return (
     <div>

@@ -11,23 +11,29 @@
 // boolOccurrence;
 
 export const boolOccurOptions = [{
-  value: 'MUST', text: 'MUST',
+  value: 'MUST', text: 'and',
 }, {
-  value: 'SHOULD', text: 'SHOULD',
+  value: 'SHOULD', text: 'or',
 }, {
-  value: 'MUST_NOT', text: 'MUST_NOT',
+  value: 'MUST_NOT', text: 'and not',
 }];
 
+
+// DEFAULT, FUZZY, PHRASE, RANGE, PREFIX, WILDCARD
 export const queryTypeOptions = [{
-  value: 'DEFAULT', text: 'DEFAULT',
+  value: 'DEFAULT', text: 'term',
 }, {
-  value: 'FUZZY', text: 'FUZZY',
+  value: 'FUZZY', text: 'fuzzy',
 }, {
-  value: 'PHRASE', text: 'PHRASE',
+  value: 'PHRASE', text: 'phrase',
+}, {
+  value: 'PREFIX', text: 'prefix',
+}, {
+  value: 'WILDCARD', text: 'wildcard',
 }];
 
 const simpleSearch = {
-  query: { label: 'Search query' }
+  query: { label: '' }
 };
 
 
@@ -61,8 +67,8 @@ Object.keys(paperFields).forEach((fieldKey) => {
 
 Object.assign(advancedSearch, {
   category: { label: paperFields.categoryName.label },
-  dateFrom: { label: 'Date from' },
-  dateTo: { label: 'Date to' }
+  dateFrom: { label: 'Publish date from' },
+  dateTo: { label: 'Publish date to' }
 });
 
 export { simpleSearch, advancedSearch };

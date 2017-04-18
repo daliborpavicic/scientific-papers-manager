@@ -6,7 +6,7 @@ import { authorities } from '../../../state/auth/authStore';
 
 const PublishPaperPage = () => {
   return (
-    <div>
+    <div className='column is-half'>
       <PublishForm />
     </div>
   );

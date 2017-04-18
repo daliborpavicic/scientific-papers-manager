@@ -7,10 +7,10 @@ const PaperSearchResult = ({ hit, searchPapersStore }) => {
 
   return (
     <div className='box'>
-      <p className='content'>
+      <div className='content'>
         <strong>{title}</strong> <small>{`${numberOfImages} images`}</small>
         <p dangerouslySetInnerHTML={{ __html: highlightedText }} />
-        <p className='control is-grouped'>
+        <div className='control is-grouped'>
           <Button
             text={'Download'} type={buttonTypes.link}
             onClick={() => { searchPapersStore.downloadPaper(fileName); }}
@@ -20,8 +20,8 @@ const PaperSearchResult = ({ hit, searchPapersStore }) => {
             type={buttonTypes.link}
             onClick={() => { searchPapersStore.searchMoreLikeThis(id); }}
           />
-        </p>
-      </p>
+        </div>
+      </div>
     </div>
   );
 };

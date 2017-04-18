@@ -26,15 +26,19 @@ const App = () => {
       <Provider {...stores}>
         <section className='hero is-light'>
           <Header />
-          {notificationVisible && <Notification />}
+          {notificationVisible &&
+          <div className='column is-4 is-offset-8'>
+            <Notification />
+          </div>
+          }
           <div className='hero-body'>
             <div className='container'>
               <div className='columns'>
-                <div className='column is-half is-offset-one-quarter'>
-                  <Route exact path={'/'} component={HomePage}/>
-                  <Route exact path={'/login'} component={LoginPage}/>
-                  <Route exact path={'/publish'} component={PublishPaperPage}/>
-                  <Route exact path={'/search'} component={SearchPapersPage}/>
+                <div className='column'>
+                  <Route exact path={'/'} component={HomePage} />
+                  <Route exact path={'/login'} component={LoginPage} />
+                  <Route exact path={'/publish'} component={PublishPaperPage} />
+                  <Route exact path={'/search'} component={SearchPapersPage} />
                 </div>
               </div>
             </div>

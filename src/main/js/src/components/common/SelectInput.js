@@ -9,11 +9,11 @@ const SelectInput = ({
     source.setValue(e.target.value);
   };
 
+  const labelText = source.getLabel();
+
   return (
-    <div>
-      <label className='label'>
-        {source.getLabel()}
-      </label>
+    <div className='control'>
+      {labelText && <label className='label'>{labelText}</label>}
       <p className='control'>
         <span className='select'>
           <select value={source.getValue()} onChange={onChange}>

@@ -18,11 +18,13 @@ import {
 const simpleSearchForm = formFactory(simpleSearch);
 const advancedSearchForm = formFactory(advancedSearch);
 
-const searchPapersStore = (() => {
+const searchPapersStore = (uiStore) => {
   const state = observable({
     isAdvancedSearch: false,
     searchResults: [],
   });
+
+  const onError = uiStore.getErrorCallback();
 
   const getQueryParamFormFields = (paperFieldName) => {
     return {
@@ -71,15 +73,15 @@ const searchPapersStore = (() => {
     domHandlers: {
       onSearchSimple: action((e) => {
         const query = simpleSearchForm.getFieldValue('query');
-        searchSimple(query).then((results) => {
+        searchSimple(query).then(action((results) => {
           state.searchResults = results;
-        });
+        }), onError);
       }),
       onSearchAdvanced: action((e) => {
         const advancedSearchParams = createAdvancedSearchRequestData();
-        searchAdvanced(advancedSearchParams).then((results) => {
+        searchAdvanced(advancedSearchParams).then(action((results) => {
           state.searchResults = results;
-        });
+        }), onError);
       }),
       onClickSwitchSearch: action(() => {
         state.isAdvancedSearch = !state.isAdvancedSearch;
@@ -88,11 +90,13 @@ const searchPapersStore = (() => {
     simpleSearchForm,
     advancedSearchForm,
     isAdvancedSearch: () => state.isAdvancedSearch,
-    downloadPaper: (fileName) => downloadPaper(fileName),
-    searchMoreLikeThis: (paperId) => searchMoreLikeThis(paperId),
+    downloadPaper: fileName => downloadPaper(fileName),
+    searchMoreLikeThis: paperId => searchMoreLikeThis(paperId).then(action((results) => {
+      state.searchResults = results;
+    }), onError),
     getQueryParamFormFields,
     getSearchResults: () => state.searchResults
   };
-})();
+};
 
 export default searchPapersStore;

@@ -6,8 +6,8 @@ import TextArea from '../../common/TextArea';
 import SelectInput from '../../common/SelectInput';
 import Button, { buttonTypes } from '../../common/Button';
 
-const MetadataForm = ({ publishPaperStore, selectOptionsStore }) => {
-  const paperCategoryOptions = selectOptionsStore.getPaperCategoryOptions();
+const MetadataForm = ({ publishPaperStore, uiStore }) => {
+  const paperCategoryOptions = uiStore.getPaperCategoryOptions();
   const { paperMetadataForm, onClickPublish } = publishPaperStore;
   const {
     title,
@@ -38,7 +38,7 @@ const MetadataForm = ({ publishPaperStore, selectOptionsStore }) => {
 
 MetadataForm.propTypes = {
   publishPaperStore: PropTypes.object.isRequired,
-  selectOptionsStore: PropTypes.object.isRequired
+  uiStore: PropTypes.object.isRequired
 };
 
-export default inject('publishPaperStore', 'selectOptionsStore')(observer(MetadataForm));
+export default inject('publishPaperStore', 'uiStore')(observer(MetadataForm));

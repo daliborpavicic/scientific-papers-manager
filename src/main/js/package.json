@@ -1,6 +1,6 @@
 {
   "name": "scientific-papers-manager-front-end",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Front end of web application for managing and searching of the scientific papers",
   "scripts": {
     "prestart": "npm-run-all start-message clean-dist copy-files compile-sass",

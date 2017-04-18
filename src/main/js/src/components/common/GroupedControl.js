@@ -7,6 +7,8 @@ const GroupedControl = ({ children }) => {
   );
 };
 
-GroupedControl.propTypes = {};
+GroupedControl.propTypes = {
+  children: PropTypes.node
+};
 
 export default observer(GroupedControl);

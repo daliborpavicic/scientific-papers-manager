@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import UploadForm from './UploadForm';
 import MetadataForm from './MetadataForm';
 
-const PublishForm = ({publishPaperStore}) => {
+const PublishForm = ({ publishPaperStore }) => {
   const isUploadVisible = expr(() => publishPaperStore.isUploadFormVisible());
   const isPublishing = expr(() => publishPaperStore.isPublishing());
 

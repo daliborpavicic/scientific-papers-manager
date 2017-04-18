@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import PublishForm from './PublishForm';
 import Protected from '../../security/Protected';

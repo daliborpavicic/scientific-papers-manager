@@ -14,6 +14,5 @@ export function isEmail(value) {
   return String(value).indexOf('@') <= 0
     ? 'Invalid email format'
     : null;
-};
-
+}
 

@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 import jwtDecode from 'jwt-decode';
 import formFactory from '../common/factories/formFactory';
 import { isRequired } from '../common/validation/supportedValidators';
-import { authenticate, getUserDetails } from '../../api/authApi';
+import { authenticate } from '../../api/authApi';
 
 const loginForm = formFactory({
   username: { label: 'Username', validators: [isRequired] },
@@ -24,8 +24,6 @@ const authStore = (storageService, uiStore) => {
       authorities: decodedToken.authorities.map(authorityObj => authorityObj.authority),
     };
   };
-
-  const onError = uiStore.getErrorCallback();
 
   const state = observable({
     isAuthenticating: false,
@@ -65,7 +63,7 @@ const authStore = (storageService, uiStore) => {
         storageService.setJwtToken(token);
         state.isAuthenticating = false;
         uiStore.fetchPaperCategories();
-      }, onError);
+      }, uiStore.getErrorCallback());
     }),
     logout: action(() => {
       storageService.removeJwtToken();

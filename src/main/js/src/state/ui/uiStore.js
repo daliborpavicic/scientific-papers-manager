@@ -14,7 +14,7 @@ const uiStore = () => {
 
   const publicAPI = {
     domHandlers: {
-      onDeleteNotificationClick: (e) => {
+      onDeleteNotificationClick: () => {
         state.isNotificationVisible = false;
       }
     },

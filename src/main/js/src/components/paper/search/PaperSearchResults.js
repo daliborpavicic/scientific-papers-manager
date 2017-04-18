@@ -12,6 +12,8 @@ const PaperSearchResults = ({ searchPapersStore }) => {
   );
 };
 
-PaperSearchResults.propTypes = {};
+PaperSearchResults.propTypes = {
+  searchPapersStore: PropTypes.object
+};
 
 export default inject('searchPapersStore')(observer(PaperSearchResults));

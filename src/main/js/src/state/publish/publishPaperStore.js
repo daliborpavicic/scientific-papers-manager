@@ -51,7 +51,6 @@ const publishPaperStore = (uiStore) => {
             message: 'Paper has been published successfully!'
           });
           uploadPaperForm.reset();
-          uploadPaperForm.setfi
           paperMetadataForm.reset();
           state.isUploadFormVisible = true;
           state.isPublishing = false;

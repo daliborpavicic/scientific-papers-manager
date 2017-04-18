@@ -10,7 +10,6 @@ const Header = ({ authStore }) => {
   const isAuthenticated = expr(() => authStore.isAuthenticated());
   const canSearch = expr(() => authStore.canSearchPapers());
   const canPublish = expr(() => authStore.canPublishPapers());
-  const activeLinkClassName = 'is-active';
 
   return (
     <div className='hero-head'>

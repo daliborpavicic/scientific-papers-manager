@@ -4,14 +4,14 @@ import Form from '../../common/Form';
 import TextInput from '../../common/TextInput';
 import Button, { buttonTypes } from '../../common/Button';
 
-const SimpleSearchForm = ({searchPapersStore}) => {
+const SimpleSearchForm = ({ searchPapersStore }) => {
   const {
     simpleSearchForm,
     domHandlers: {
       onSearchSimple
     }
   } = searchPapersStore;
-  const {query} = simpleSearchForm.getFields();
+  const { query } = simpleSearchForm.getFields();
 
   return (
     <Form>

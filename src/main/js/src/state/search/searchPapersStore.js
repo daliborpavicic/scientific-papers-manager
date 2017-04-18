@@ -61,7 +61,9 @@ const searchPapersStore = (uiStore) => {
         request[paperFieldName] = {
           queryString: advancedSearchForm.getFieldValue(getQueryStringFieldName(paperFieldName)),
           queryType: advancedSearchForm.getFieldValue(getQueryTypeFieldName(paperFieldName)),
-          boolOccurrence: advancedSearchForm.getFieldValue(getBoolOccurrenceFieldName(paperFieldName))
+          boolOccurrence: advancedSearchForm.getFieldValue(
+            getBoolOccurrenceFieldName(paperFieldName)
+          )
         };
       }
     });
@@ -71,13 +73,13 @@ const searchPapersStore = (uiStore) => {
 
   return {
     domHandlers: {
-      onSearchSimple: action((e) => {
+      onSearchSimple: action(() => {
         const query = simpleSearchForm.getFieldValue('query');
         searchSimple(query).then(action((results) => {
           state.searchResults = results;
         }), onError);
       }),
-      onSearchAdvanced: action((e) => {
+      onSearchAdvanced: action(() => {
         const advancedSearchParams = createAdvancedSearchRequestData();
         searchAdvanced(advancedSearchParams).then(action((results) => {
           state.searchResults = results;

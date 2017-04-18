@@ -10,7 +10,7 @@ const onSuccess = (response) => {
   return response.json().then(json => Promise.reject(json));
 };
 
-const onError = error => console.log(error);
+const onError = error => console.log(error); // eslint-disable-line no-console
 
 const createAuthorizationHeader = () => {
   return {

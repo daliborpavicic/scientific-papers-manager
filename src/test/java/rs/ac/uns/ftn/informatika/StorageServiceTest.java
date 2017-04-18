@@ -15,15 +15,16 @@ import rs.ac.uns.ftn.informatika.service.impl.FileSystemStorageService;
 public class StorageServiceTest {
 	
 	@Test
-	public void storeMultipartFile_givenFile_shouldSaveFileWithUniqueName() throws IOException {
+	public void storeMultipartFile_givenSameFileTwice_shouldSaveFilesWithUniqueNames() throws IOException {
 		StorageProperties storageProperties = new StorageProperties();
 		storageProperties.setLocation(System.getProperty("java.io.tmpdir"));
 		FileSystemStorageService storageService = new FileSystemStorageService(storageProperties);
 		
 		MockMultipartFile mockMultipartFile = createMockMultipartFile();
-		String storedFileName = storageService.store(mockMultipartFile);
+		String firstFileName = storageService.store(mockMultipartFile);
+		String secondFileName = storageService.store(mockMultipartFile);
 		
-		Assert.assertTrue(storedFileName.contains(mockMultipartFile.getName()));
+		Assert.assertFalse(firstFileName.equals(secondFileName));
 	}
 	
 	public MockMultipartFile createMockMultipartFile() throws IOException {
